@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcademiaHub | المنصة الأكاديمية الشاملة</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons & Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        /* 
+         * ==========================================
+         * CSS VARIABLES & RESET
+         * ==========================================
+         */
+        :root {
+            --p: #2563EB; --pd: #1D4ED8; --pl: #60A5FA; --pbg: #EFF6FF;
+            --s: #7C3AED; --sl: #A78BFA;
+            --g9: #0F172A; --g8: #1E293B; --g7: #334155; --g6: #475569;
+            --g5: #64748B; --g4: #94A3B8; --g3: #CBD5E1; --g2: #E2E8F0;
+            --g1: #F1F5F9; --g0: #F8FAFC; --w: #FFFFFF;
+            --success: #10B981; --danger: #EF4444; --warning: #F59E0B;
+            --bg: #F8FAFC;
+            --r: 12px; --rl: 16px; --rxl: 24px; --rfull: 50px;
+            --sh: 0 2px 12px rgba(0,0,0,.06);
+            --shmd: 0 8px 30px rgba(0,0,0,.1);
+            --shlg: 0 20px 60px rgba(0,0,0,.12);
+            --tr: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            --trf: all 0.2s ease;
+            --ff: 'Cairo', 'Tajawal', sans-serif;
+            --ffd: 'El Messiri', 'Cairo', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--ff);
+            background-color: var(--bg);
+            color: var(--g8);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: var(--trf); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 { font-family: var(--ffd); font-weight: 700; margin-bottom: 1rem; }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--p), var(--s));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .container {
+            width: 90%; max-width: 1280px; margin: 0 auto; padding: 0 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 8px; padding: 10px 24px; border-radius: var(--r);
+            font-weight: 600; font-family: var(--ffd); cursor: pointer;
+            border: 2px solid transparent; transition: var(--tr);
+            font-size: 0.95rem;
+        }
+        .btn-primary { background: var(--p); color: var(--w); }
+        .btn-primary:hover { background: var(--pd); transform: translateY(-2px); }
+        .btn-outline { border-color: var(--p); color: var(--p); background: transparent; }
+        .btn-outline:hover { background: var(--p); color: var(--w); }
+        .btn-w { background: var(--w); color: var(--p); }
+        .btn-w:hover { background: var(--g0); }
+
+        /* 
+         * ==========================================
+         * HEADER
+         * ==========================================
+         */
+        .header {
+            position: sticky; top: 0; z-index: 500;
+            background: rgba(15,23,42,0.95); backdrop-filter: blur(20px);
+            height: 72px; display: flex; align-items: center; color: var(--w);
+            border-bottom: 1px solid rgba(255,255,255,0.1); transition: var(--tr);
+        }
+        .header.scrolled { box-shadow: var(--shmd); height: 65px; }
+        
+        .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { font-size: 1.8rem; color: var(--pl); animation: logoFloat 3s infinite ease-in-out; }
+        .logo-sub-icons { display: flex; flex-direction: column; position: absolute; margin-right: 25px; opacity: 0.3; }
+        .logo-sub-icons i { font-size: 0.7rem; margin: 2px 0; }
+        .logo-text h1 { font-size: 1.4rem; margin: 0; line-height: 1.1; color: var(--w); }
+        .logo-text span { font-size: 0.75rem; color: var(--g4); font-family: var(--ff); display: block; }
+
+        .marquee-container {
+            flex: 1; margin: 0 40px; overflow: hidden; white-space: nowrap; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+            display: none; /* Hidden on mobile */
+        }
+        @media(min-width: 1024px) { .marquee-container { display: block; } }
+        
+        .marquee-content { display: inline-block; animation: marqueeScroll 25s linear infinite; font-size: 0.9rem; color: var(--g3); }
+        .marquee-content span { margin: 0 15px; }
+
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+        .mobile-menu-btn { display: none; font-size: 1.5rem; cursor: pointer; color: var(--w); }
+        @media(max-width: 1024px) { .mobile-menu-btn { display: block; } .desktop-auth { display: none; } }
+
+        /* 
+         * ==========================================
+         * HERO SECTION
+         * ==========================================
+         */
+        .hero {
+            background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 50%, #0F172A 100%);
+            padding: 80px 0 60px; position: relative; overflow: hidden; color: var(--w); text-align: center;
+        }
+        #particles-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
+        
+        .hero-badge {
+            display: inline-block; background: rgba(37,99,235,0.2);
+            border: 1px solid var(--pl); padding: 6px 20px; border-radius: 50px;
+            font-size: 0.9rem; margin-bottom: 20px; backdrop-filter: blur(5px);
+        }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 20px; line-height: 1.2; }
+        .hero p { font-size: 1.15rem; color: var(--g4); margin-bottom: 30px; }
+        
+        .hero-stats {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
+            margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .stat-item h3 { color: var(--pl); margin: 0; font-size: 1.5rem; }
+        .stat-item p { font-size: 0.9rem; color: var(--g5); margin: 0; }
+
+        .hero-waves { position: absolute; bottom: 0; left: 0; width: 100%; line-height: 0; transform: rotate(180deg); }
+        .hero-waves svg { width: 100%; height: 60px; fill: var(--bg); }
+
+        /* 
+         * ==========================================
+         * SECTIONS COMMON
+         * ==========================================
+         */
+        section { padding: 80px 0; position: relative; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header span { 
+            display: inline-block; background: var(--pbg); color: var(--p); 
+            padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;
+        }
+        .section-header h2 { font-size: 2.2rem; color: var(--g8); margin-bottom: 10px; }
+
+        /* Grid System */
+        .grid-auto { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-md { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+        .grid-lg { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+
+        /* Card Styles */
+        .card {
+            background: var(--w); border-radius: var(--rxl); padding: 30px;
+            box-shadow: var(--sh); transition: var(--tr); border: 1px solid var(--g2);
+            position: relative; overflow: hidden; height: 100%;
+        }
+        .card:hover { transform: translateY(-8px); box-shadow: var(--shmd); border-color: var(--pl); }
+        .card-icon-box {
+            width: 60px; height: 60px; border-radius: var(--r); display: flex;
+            align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px;
+        }
+        .card-img-top { width: 100%; height: 180px; object-fit: cover; border-radius: var(--rl); margin-bottom: 20px; }
+
+        /* 
+         * ==========================================
+         * SPECIFIC SECTIONS
+         * ==========================================
+         */
+        /* Specializations */
+        .spec-card .branches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .spec-card .branches span {
+            font-size: 0.75rem; background: var(--g0); color: var(--g6);
+            padding: 4px 12px; border-radius: 20px; border: 1px solid var(--g2);
+        }
+
+        /* Services Banner */
+        .service-banner {
+            border-radius: var(--rxl); padding: 40px; color: var(--w);
+            margin-bottom: 40px; display: flex; align-items: center; gap: 20px;
+        }
+        .service-banner i { font-size: 3rem; opacity: 0.9; }
+
+        /* Experts */
+        .expert-card { text-align: center; padding: 24px; }
+        .expert-badge {
+            position: absolute; top: 15px; right: 15px;
+            padding: 4px 10px; border-radius: var(--rfull); font-size: 0.75rem; font-weight: 700;
+        }
+        .expert-img {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            margin: 0 auto 15px; border: 4px solid var(--g0); background: var(--g2);
+        }
+        .expert-rating { color: var(--warning); font-size: 0.9rem; margin: 5px 0; }
+        .expert-stats { display: flex; justify-content: center; gap: 15px; margin: 15px 0; font-size: 0.85rem; color: var(--g5); border-top: 1px solid var(--g2); padding-top: 15px; }
+
+        /* Portfolio */
+        .portfolio-card { display: flex; align-items: flex-start; gap: 15px; padding: 20px; }
+        .file-icon { font-size: 2.5rem; padding: 15px; border-radius: var(--r); }
+        .file-pdf { color: var(--danger); background: #FEF2F2; }
+        .file-ppt { color: var(--warning); background: #FFFBEB; }
+
+        /* 
+         * ==========================================
+         * COMPONENTS (Modal, Toast, WhatsApp)
+         * ==========================================
+         */
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15,23,42,0.8); backdrop-filter: blur(5px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: var(--tr);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--w); width: 90%; max-width: 480px;
+            border-radius: var(--rxl); padding: 30px; position: relative;
+            transform: scale(0.9); transition: var(--tr);
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-close { position: absolute; top: 20px; left: 20px; cursor: pointer; color: var(--g4); font-size: 1.2rem; }
+        .auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--g2); }
+        .auth-tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; color: var(--g5); font-weight: 600; }
+        .auth-tab.active { color: var(--p); border-bottom: 2px solid var(--p); }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; }
+        .form-input {
+            width: 100%; padding: 12px; border: 1px solid var(--g2);
+            border-radius: var(--r); font-family: var(--ff); transition: var(--trf);
+        }
+        .form-input:focus { border-color: var(--p); box-shadow: 0 0 0 3px var(--pbg); }
+
+        /* Toast */
+        .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; }
+        .toast {
+            background: var(--w); color: var(--g8); padding: 15px 25px;
+            border-radius: var(--r); box-shadow: var(--shmd); margin-top: 10px;
+            border-right: 4px solid var(--p); display: flex; align-items: center; gap: 10px;
+            animation: slideInRight 0.3s ease;
+        }
+        
+        /* WhatsApp Float */
+        .wa-float {
+            position: fixed; bottom: 28px; left: 28px; z-index: 900;
+            width: 60px; height: 60px; background: #25D366; color: var(--w);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            animation: waPulse 2s infinite; cursor: pointer;
+        }
+        .wa-float::after {
+            content: 'تواصل معنا'; position: absolute; left: 70px;
+            background: var(--w); color: var(--g8); padding: 5px 12px;
+            border-radius: 8px; font-size: 0.8rem; white-space: nowrap; opacity: 0;
+            transition: var(--trf); pointer-events: none;
+        }
+        .wa-float:hover::after { opacity: 1; left: 75px; }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; top: 0; right: -300px; width: 300px; height: 100%;
+            background: var(--w); z-index: 1000; box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            transition: var(--tr); padding: 80px 20px 20px; overflow-y: auto;
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: var(--tr);
+        }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+        /* Footer */
+        footer { background: var(--g9); color: var(--g4); padding: 60px 0 20px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { color: var(--w); margin-bottom: 20px; font-size: 1.2rem; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a:hover { color: var(--pl); padding-right: 5px; }
+        .copyright { text-align: center; border-top: 1px solid var(--g7); padding-top: 20px; font-size: 0.9rem; }
+
+        /* Dashboard (Hidden by default) */
+        #dashboard-view { display: none; padding-top: 100px; min-height: 80vh; }
+        
+        /* Animations */
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes waPulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .section-header h2 { font-size: 1.8rem; }
+            .grid-auto, .grid-md, .grid-lg { grid-template-columns: 1fr; }
+            section { padding: 50px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas for Particles -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo-area">
+                <div style="position:relative">
+                    <i class="fa-solid fa-graduation-cap logo-icon"></i>
+                    <div class="logo-sub-icons">
+                        <i class="fa-solid fa-book-open" style="animation: logoFloat 3s infinite 0.2s"></i>
+                        <i class="fa-solid fa-pen-fancy" style="animation: logoFloat 3s infinite 0.4s"></i>
+                    </div>
+                </div>
+                <div class="logo-text">
+                    <h1>AcademiaHub</h1>
+                    <span>المنصة الأكاديمية الشاملة</span>
+                </div>
+            </div>
+
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    <span>ثقة</span> ◆ <span>أمانة</span> ◆ <span>سرية تامة</span> ◆ <span>إنجاز</span> ◆ <span>دقة</span> ◆ <span>جودة عالية</span> ◆ <span>التزام</span> ◆ <span>خبرة</span>
+                    <span>ثقة</span> ◆ <span>أمانة</span> ◆ <span>سرية تامة</span> ◆ <span>إنجاز</span> ◆ <span>دقة</span> ◆ <span>جودة عالية</span> ◆ <span>التزام</span> ◆ <span>خبرة</span>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn btn-w desktop-auth" onclick="openModal('login')">دخول</button>
+                <button class="btn btn-primary desktop-auth" onclick="openModal('register')">حساب جديد</button>
+                <i class="fa-solid fa-bars mobile-menu-btn" onclick="toggleMobileMenu()"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU & OVERLAY -->
+    <div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
+    <aside class="mobile-menu">
+        <div style="margin-bottom: 20px;">
+            <img src="https://picsum.photos/seed/logo/80/80" style="width:60px; border-radius:50%; margin-bottom:10px;">
+            <h4>AcademiaHub</h4>
+        </div>
+        <ul class="footer-links">
+            <li><a href="#" onclick="scrollToSection('home')">الرئيسية</a></li>
+            <li><a href="#about" onclick="scrollToSection('about')">من نحن</a></li>
+            <li><a href="#services" onclick="scrollToSection('services')">الخدمات</a></li>
+            <li><a href="#experts" onclick="scrollToSection('experts')">الخبراء</a></li>
+            <li><a href="#" onclick="openModal('login'); toggleMobileMenu()">تسجيل الدخول</a></li>
+        </ul>
+        <div style="margin-top:30px; padding-top:20px; border-top:1px solid var(--g2);">
+            <a href="https://chat.whatsapp.com/DO6CyC5MwajLizwHNkmLHU?mode=gi_t" target="_blank" class="btn btn-success" style="width:100%; background:#25D366; color:#fff;">
+                <i class="fa-brands fa-whatsapp"></i> واتساب
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT (LANDING) -->
+    <main id="main-view">
+        
+        <!-- HERO -->
+        <section class="hero" id="home">
+            <div class="container hero-content" data-aos="fade-up">
+                <div class="hero-badge">🎓 المنصة الأكاديمية الأولى عربياً</div>
+                <h1>شريكك الأمثل في <br><span class="text-gradient">رحلتك الأكاديمية</span></h1>
+                <p>نقدم لك حلولاً بحثية شاملة، إشرافاً أكاديمياً متقناً، وفريقاً من الخبراء لضمان تميزك وتفوقك.</p>
+                <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="scrollToSection('services')">اطلب خدمتك الآن</button>
+                    <button class="btn btn-outline" style="border-color:var(--g4); color:var(--w);" onclick="scrollToSection('services')">استكشف خدماتنا</button>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item"><h3>+500</h3><p>مشروع مكتمل</p></div>
+                    <div class="stat-item"><h3>+30</h3><p>خبير متخصص</p></div>
+                    <div class="stat-item"><h3>+15</h3><p>دولة</p></div>
+                    <div class="stat-item"><h3>98%</h3><p>رضا العملاء</p></div>
+                </div>
+            </div>
+            <div class="hero-waves">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="container">
+                <div class="section-header" data-aos="fade-down">
+                    <span>من نحن</span>
+                    <h2>لماذا AcademiaHub؟</h2>
+                </div>
+                <div class="grid-auto" id="about-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SPECIALIZATIONS -->
+        <section style="background:var(--w)" id="specs">
+            <div class="container">
+                <div class="section-header" data-aos="fade-down">
+                    <span>التخصصات</span>
+                    <h2>جميع التخصصات والفروع</h2>
+                </div>
+                <div class="grid-auto grid-md" id="specs-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services">
+            <div class="container">
+                <div class="section-header" data-aos="fade-down">
+                    <span>خدماتنا</span>
+                    <h2>خدمات بحثية متكاملة</h2>
+                </div>
+                <div id="services-container">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERTS -->
+        <section style="background:var(--w)" id="experts">
+            <div class="container">
+                <div class="section-header" data-aos="fade-down">
+                    <span>فريق العمل</span>
+                    <h2>خبراء أكاديميون متميزون</h2>
+                </div>
+                <div class="grid-auto" id="experts-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="portfolio">
+            <div class="container">
+                <div class="section-header" data-aos="fade-down">
+                    <span>أعمالنا</span>
+                    <h2>نماذج من الأعمال السابقة</h2>
+                </div>
+                <div class="grid-auto" id="portfolio-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- LIBRARY -->
+        <section id="library">
+            <div class="container">
+                <div class="section-header" data-aos="fade-down">
+                    <span>المكتبة</span>
+                    <h2>قوالب وأدوات مجانية</h2>
+                </div>
+                <div class="grid-auto grid-md" id="library-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section style="background:var(--g9); position:relative; overflow:hidden;">
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:300px; height:300px; background:var(--p); filter:blur(150px); opacity:0.3; border-radius:50%;"></div>
+            <div class="container" style="position:relative; z-index:2; text-align:center;">
+                <div class="card" style="background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); max-width:600px; margin:0 auto;">
+                    <i class="fa-regular fa-paper-plane" style="font-size:3rem; color:var(--pl); margin-bottom:20px; display:block;"></i>
+                    <h2 style="color:var(--w);">هل أنت مستعد للبدء؟</h2>
+                    <p style="color:var(--g4); margin-bottom:30px;">انضم إلى آلاف الباحثين والطلاب الذين حققوا التميز معنا.</p>
+                    <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
+                        <button class="btn btn-primary" onclick="openModal('register')">ابدأ الآن - أنشئ حسابك</button>
+                        <button class="btn btn-outline" style="border-color:var(--g5); color:var(--g4);" onclick="openModal('login')">لدي حساب بالفعل</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- DASHBOARD VIEW (Hidden until login) -->
+    <section id="dashboard-view" class="container">
+        <div class="section-header">
+            <h2>لوحة التحكم</h2>
+            <p>أهلاً بك، <span id="user-name-display" class="text-gradient">العضو</span></p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: 250px 1fr; gap:30px; align-items:start;">
+            <!-- Sidebar -->
+            <div class="card" style="padding:20px;">
+                <ul class="footer-links">
+                    <li style="padding:10px; background:var(--pbg); border-radius:8px; color:var(--p); font-weight:700;">الرئيسية</li>
+                    <li><a href="#">طلباتي</a></li>
+                    <li><a href="#">الرسائل</a></li>
+                    <li><a href="#">الملف الشخصي</a></li>
+                    <li style="margin-top:20px; border-top:1px solid var(--g2); pt:10px;">
+                        <a href="#" onclick="logout()" style="color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Content -->
+            <div class="card">
+                <h3>نظرة عامة</h3>
+                <div class="grid-auto" style="margin-bottom:30px;">
+                    <div style="background:var(--g0); padding:15px; border-radius:12px; text-align:center;">
+                        <h4 style="color:var(--p); margin:0; font-size:1.8rem;">0</h4>
+                        <span style="font-size:0.85rem; color:var(--g5);">طلبات نشطة</span>
+                    </div>
+                    <div style="background:var(--g0); padding:15px; border-radius:12px; text-align:center;">
+                        <h4 style="color:var(--success); margin:0; font-size:1.8rem;">0</h4>
+                        <span style="font-size:0.85rem; color:var(--g5);">مكتملة</span>
+                    </div>
+                </div>
+                
+                <div style="text-align:center; padding:40px; border:2px dashed var(--g2); border-radius:12px;">
+                    <i class="fa-solid fa-folder-open" style="font-size:3rem; color:var(--g3); margin-bottom:15px;"></i>
+                    <p style="color:var(--g5);">لا توجد طلبات حالياً</p>
+                    <button class="btn btn-primary" style="margin-top:15px;" onclick="window.location.reload()">طلب خدمة جديدة</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo-area" style="margin-bottom:20px;">
+                        <i class="fa-solid fa-graduation-cap" style="color:var(--pl); font-size:1.5rem;"></i>
+                        <h4 style="margin:0 0 10px; color:var(--w);">AcademiaHub</h4>
+                    </div>
+                    <p>المنصة الرائدة في تقديم الخدمات الأكاديمية والبحثية بجودة عالية واحترافية تامة.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>روابط سريعة</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">من نحن</a></li>
+                        <li><a href="#services">الخدمات</a></li>
+                        <li><a href="#experts">فريق العمل</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>تواصل معنا</h4>
+                    <ul class="footer-links">
+                        <li><i class="fa-solid fa-envelope"></i> scottmcnamara316@gmail.com</li>
+                        <li><i class="fa-brands fa-whatsapp"></i> المجموعة الدعم</li>
+                    </ul>
+                    <div style="display:flex; gap:10px; margin-top:20px;">
+                        <a href="#" style="background:var(--g7); width:35px; height:35px; display:flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" style="background:var(--g7); width:35px; height:35px; display:flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" style="background:var(--g7); width:35px; height:35px; display:flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; <span id="year"></span> AcademiaHub. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://chat.whatsapp.com/DO6CyC5MwajLizwHNkmLHU?mode=gi_t" target="_blank" class="wa-float">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- AUTH MODAL -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-content">
+            <i class="fa-solid fa-xmark modal-close" onclick="closeModal()"></i>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">تسجيل الدخول</div>
+                <div class="auth-tab" id="tab-register" onclick="switchTab('register')">حساب جديد</div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input type="email" class="form-input" required placeholder="example@mail.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور</label>
+                    <input type="password" class="form-input" required placeholder="********">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">دخول</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" style="display:none;" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label class="form-label">الاسم الأول</label>
+                    <input type="text" id="reg-fname" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input type="email" id="reg-email" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">المستوى الأكاديمي</label>
+                    <select class="form-input" id="reg-level">
+                        <option>طالب</option>
+                        <option>ماجستير</option>
+                        <option>دكتوراه</option>
+                        <option>أكاديمي</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور</label>
+                    <input type="password" class="form-input" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">تسجيل</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <script>
+        /* 
+         * ==========================================
+         * DATA STRUCTURES
+         * ==========================================
+         */
+        
+        const SPECS = [
+            { name: "الطب والعلوم الصحية", count: 15, img: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&q=80", icon: "fa-stethoscope", branches: ["طب عام", "جراحة", "صيدلة", "تمريض"] },
+            { name: "الهندسة", count: 15, img: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&q=80", icon: "fa-cogs", branches: ["برمجيات", "مدني", "ميكانيك", "كهرباء"] },
+            { name: "العلوم الطبيعية", count: 10, img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&q=80", icon: "fa-flask", branches: ["فيزياء", "كيمياء", "أحياء", "فلك"] },
+            { name: "العلوم الاجتماعية", count: 7, img: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&q=80", icon: "fa-users", branches: ["علم اجتماع", "إعلام", "خدمة اجتماعية"] },
+            { name: "العلوم الإنسانية", count: 9, img: "https://images.unsplash.com/photo-1491841573634-28140fc7ced7?w=400&q=80", icon: "fa-book", branches: ["تاريخ", "جغرافيا", "فلسفة", "لغة عربية"] },
+            { name: "الإدارة والاقتصاد", count: 8, img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80", icon: "fa-chart-line", branches: ["محاسبة", "تسويق", "مالية", "إدارة أعمال"] },
+            { name: "القانون والأنظمة", count: 7, img: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&q=80", icon: "fa-scale-balanced", branches: ["قانون خاص", "قانون عام", "شرعية"] }
+        ];
+
+        const ABOUT_DATA = [
+            { title: "خبراء متخصصون", icon: "fa-user-graduate", color: "var(--p)" },
+            { title: "سرية تامة", icon: "fa-lock", color: "var(--success)" },
+            { title: "التزام بالمواعيد", icon: "fa-clock", color: "var(--warning)" },
+            { title: "دعم متواصل", icon: "fa-headset", color: "var(--s)" }
+        ];
+
+        const SERVICES_SECTIONS = [
+            {
+                title: "رسائل الماجستير والدكتوراه",
+                gradient: "linear-gradient(135deg,#1E3A5F,#2563EB)",
+                icon: "fa-graduation-cap",
+                items: [
+                    { t: "اقتراح عنوان الرسالة", i: "fa-lightbulb", c: "#2563EB" },
+                    { t: "كتابة البروبوزل Proposal", i: "fa-file-lines", c: "#3B82F6" },
+                    { t: "توفير المصادر والمراجع", i: "fa-book-open", c: "#60A5FA" },
+                    { t: "التدقيق الإملائي واللغوي", i: "fa-spell-check", c: "#10B981" },
+                    { t: "إعادة التنسيق حسب دليل الجامعة", i: "fa-paint-roller", c: "#F59E0B" },
+                    { t: "المساعدة في كتابة أحد الفصول", i: "fa-pen-to-square", c: "#8B5CF6" },
+                    { t: "الإشراف على كتابة الرسالة كاملة", i: "fa-user-graduate", c: "#EC4899" },
+                    { t: "المساعدة في تحليل البيانات", i: "fa-chart-bar", c: "#06B6D4" },
+                    { t: "إعداد عرض المناقشة Presentation", i: "fa-list-check", c: "#6366F1" }
+                ]
+            },
+            {
+                title: "مذكرات التخرج",
+                gradient: "linear-gradient(135deg,#0F766E,#14B8A6)",
+                icon: "fa-scroll",
+                items: [
+                    { t: "اقتراح موضوع", i: "fa-lightbulb", c: "#0F766E" },
+                    { t: "كتابة خطة", i: "fa-list-ol", c: "#14B8A6" },
+                    { t: "جمع مصادر", i: "fa-book", c: "#2DD4BF" },
+                    { t: "كتابة كاملة", i: "fa-pen-nib", c: "#5EEAD4" },
+                    { t: "تدقيق", i: "fa-check-double", c: "#99F6E4" },
+                    { t: "تنسيق نهائي", i: "fa-file-pdf", c: "#CCFBF1" }
+                ]
+            },
+            {
+                title: "مشاريع التخرج",
+                gradient: "linear-gradient(135deg,#9A3412,#F97316)",
+                icon: "fa-laptop-code",
+                items: [
+                    { t: "اقتراح فكرة", i: "fa-brain", c: "#9A3412" },
+                    { t: "خطة مشروع", i: "fa-project-diagram", c: "#EA580C" },
+                    { t: "تنفيذ برمجي", i: "fa-code", c: "#F97316" },
+                    { t: "تقرير", i: "fa-file-alt", c: "#FB923C" },
+                    { t: "عرض تقديمي", i: "fa-video", c: "#FDBA74" }
+                ]
+            },
+            {
+                title: "الأوراق البحثية",
+                gradient: "linear-gradient(135deg,#6D28D9,#8B5CF6)",
+                icon: "fa-newspaper",
+                items: [
+                    { t: "اقتراح فكرة", i: "fa-lightbulb", c: "#6D28D9" },
+                    { t: "كتابة", i: "fa-pen-fancy", c: "#7C3AED" },
+                    { t: "تحرير", i: "fa-edit", c: "#8B5CF6" },
+                    { t: "إدارة استشهادات", i: "fa-quote-right", c: "#A78BFA" },
+                    { t: "تنسيق", i: "fa-align-right", c: "#C4B5FD" }
+                ]
+            },
+            {
+                title: "النشر الدولي والمحلي",
+                gradient: "linear-gradient(135deg,#075985,#0284C7)",
+                icon: "fa-globe",
+                items: [
+                    { t: "اختيار المجلة", i: "fa-search", c: "#075985" },
+                    { t: "تنسيق للقالب", i: "fa-file-powerpoint", c: "#0284C7" },
+                    { t: "Cover Letter", i: "fa-envelope-open-text", c: "#0EA5E9" },
+                    { t: "فحص اقتباس", i: "fa-percentage", c: "#38BDF8" },
+                    { t: "متابعة تحكيم", i: "fa-comments", c: "#7DD3FC" }
+                ],
+                journals: ["Nature", "Science", "IEEE Access", "Springer", "Elsevier"]
+            },
+            {
+                title: "الترجمة وفحص الاقتباس",
+                gradient: "linear-gradient(135deg,#B45309,#D97706)",
+                icon: "fa-language",
+                items: [
+                    { t: "ترجمة عربي-إنجليزي", i: "fa-language", c: "#B45309" },
+                    { t: "مراجعة Native", i: "fa-user-check", c: "#D97706" },
+                    { t: "فحص Turnitin", i: "fa-shield-halved", c: "#F59E0B" },
+                    { t: "إعادة صياغة", i: "fa-eraser", c: "#FBBF24" },
+                    { t: "تدقيق مراجع", i: "fa-list", c: "#FCD34D" }
+                ]
+            },
+            {
+                title: "التحليل الإحصائي",
+                gradient: "linear-gradient(135deg,#831843,#BE185D)",
+                icon: "fa-chart-pie",
+                items: [
+                    { t: "إحصاء وصفي", i: "fa-table", c: "#831843" },
+                    { t: "اختبارات فروض", i: "fa-vials", c: "#9D174D" },
+                    { t: "انحدار", i: "fa-chart-line", c: "#BE185D" },
+                    { t: "SEM", i: "fa-project-diagram", c: "#DB2777" },
+                    { t: "R/Python", i: "fa-code", c: "#F472B6" },
+                    { t: "SPSS", i: "fa-file-csv", c: "#FBCFE8" }
+                ]
+            },
+            {
+                title: "البرمجة والتطوير",
+                gradient: "linear-gradient(135deg,#1E293B,#334155)",
+                icon: "fa-code",
+                items: [
+                    { t: "مواقع ويب", i: "fa-globe", c: "#1E293B" },
+                    { t: "تطبيقات جوال", i: "fa-mobile-screen", c: "#334155" },
+                    { t: "أنظمة سطح مكتب", i: "fa-desktop", c: "#475569" },
+                    { t: "UI/UX", i: "fa-pen-ruler", c: "#64748B" },
+                    { t: "MATLAB", i: "fa-square-root-variable", c: "#94A3B8" },
+                    { t: "Python", i: "fa-python", c: "#CBD5E1" },
+                    { t: "قواعد بيانات", i: "fa-database", c: "#E2E8F0" }
+                ]
+            }
+        ];
+
+        // Helper to generate experts
+        const EXPERTS = [];
+        const COUNTRIES = ['🇸🇦', '🇲🇦', '🇩🇿', '🇮🇶', '🇯🇴', '🇱🇾', '🇬🇧', '🇺🇸', '🇫🇷', '🇩🇪', '🇪🇸', '🇮🇹', '🇯🇵'];
+        const TITLES = ['أ.د.', 'د.', 'م.'];
+        
+        SPECS.forEach((spec, i) => {
+            for(let j=0; j<6; j++) {
+                const rating = (4.0 + Math.random()).toFixed(1);
+                let rank = 'bronze';
+                if(rating >= 4.8) rank = 'diamond';
+                else if(rating >= 4.6) rank = 'gold';
+                else if(rating >= 4.4) rank = 'silver';
+                
+                const rankBadge = rank === 'diamond' ? '💎 ماسي' : rank === 'gold' ? '🥇 ذهبي' : rank === 'silver' ? '🥈 فضي' : '🥉 برونزي';
+                const rankColor = rank === 'diamond' ? '#0F172A' : rank === 'gold' ? '#B45309' : rank === 'silver' ? '#475569' : '#92400E';
+
+                EXPERTS.push({
+                    name: `الخبير ${TITLES[j%3]} ${['أحمد', 'محمد', 'سارة', 'خالد', 'ليلى', 'عمر', 'نورة', 'فهد'][j%8]} ${['العربي', 'العالم', 'المختص', 'البارع', 'المثقف', 'الدقيق'][j%6]}`,
+                    title: spec.name,
+                    rating: rating,
+                    projects: 10 + Math.floor(Math.random()*40),
+                    exp: 2 + Math.floor(Math.random()*10),
+                    country: COUNTRIES[(i+j)%COUNTRIES.length],
+                    rank: { text: rankBadge, color: rankColor },
+                    id: i*6 + j
+                });
+            }
+        });
+
+        const PORTFOLIO = [
+            { t: "رسالة ماجستير - تربية", type: "pdf", d: "منهجية بحثية كاملة" },
+            { t: "بحث علمي - طب", type: "pdf", d: "نشر في مجلة محكمة" },
+            { t: "عرض تقديمي - هندسة", type: "ppt", d: "Project Defense" },
+            { t: "مذكرة تخرج - قانون", type: "pdf", d: "تحليل قانوني مقارن" },
+            { t: "بحث اقتصاد", type: "pdf", d: "الأسواق الناشئة" },
+            { t: "رسالة دكتوراه - آداب", type: "pdf", d: "النقد الأدبي الحديث" }
+        ];
+
+        const LIBRARY = [
+            { t: "قالب LaTeX للرسائل", f: "ZIP", d: "قالب جاهز للتعديل" },
+            { t: "Cover Letter نموذجي", f: "DOCX", d: "للمجلات الدولية" },
+            { t: "خطة البحث المقترحة", f: "PDF", d: "Guide" },
+            { t: "قالب عرض PowerPoint", f: "PPTX", d: "تصميم أكاديمي احترافي" },
+            { t: "دليل APA المرجعي", f: "PDF", d: "الإصدار السابع" }
+        ];
+
+        /* 
+         * ==========================================
+         * APP LOGIC & RENDERING
+         * ==========================================
+         */
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({ duration: 800, once: true });
+            document.getElementById('year').textContent = new Date().getFullYear();
+            
+            initParticles();
+            renderAll();
+            
+            // Check LocalStorage
+            const user = JSON.parse(localStorage.getItem('ahu'));
+            if(user) {
+                document.getElementById('user-name-display').textContent = user.fname;
+            }
+
+            // Header Scroll
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('.header');
+                if(window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+        });
+
+        function renderAll() {
+            renderAbout();
+            renderSpecs();
+            renderServices();
+            renderExperts();
+            renderPortfolio();
+            renderLibrary();
+        }
+
+        function renderAbout() {
+            const container = document.getElementById('about-grid');
+            container.innerHTML = ABOUT_DATA.map(item => `
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-icon-box" style="background:${item.color}20; color:${item.color}">
+                        <i class="fa-solid ${item.icon}"></i>
+                    </div>
+                    <h3>${item.title}</h3>
+                    <p style="color:var(--g5); font-size:0.9rem;">نقدم لك أفضل الحلول لضمان جودة العمل.</p>
+                </div>
+            `).join('');
+        }
+
+        function renderSpecs() {
+            const container = document.getElementById('specs-grid');
+            container.innerHTML = SPECS.map((spec, i) => `
+                <div class="card spec-card" data-aos="fade-up" data-aos-delay="${i*100}">
+                    <img src="${spec.img}" class="card-img-top" alt="${spec.name}">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="margin:0;">${spec.name}</h4>
+                        <span style="font-size:0.8rem; color:var(--g5);">${spec.count} فرع</span>
+                    </div>
+                    <div class="branches">
+                        ${spec.branches.map(b => `<span>${b}</span>`).join('')}
+                        ${spec.count > 4 ? `<span>+${spec.count - 4}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderServices() {
+            const container = document.getElementById('services-container');
+            container.innerHTML = SERVICES_SECTIONS.map((sec, i) => `
+                <div class="service-section" style="margin-bottom:60px;" data-aos="fade-up">
+                    <div class="service-banner" style="background:${sec.gradient}">
+                        <i class="fa-solid ${sec.icon}"></i>
+                        <div>
+                            <h2 style="margin:0; font-size:1.8rem;">${sec.title}</h2>
+                            <p style="opacity:0.9; margin:0;">حلول متكاملة لضمان نجاحك</p>
+                        </div>
+                    </div>
+                    <div class="grid-auto">
+                        ${sec.items.map(item => `
+                            <div class="card" style="border-right: 4px solid ${item.c}; padding-right:20px;">
+                                <div style="display:flex; gap:15px;">
+                                    <div style="background:${item.c}20; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:${item.c}; flex-shrink:0;">
+                                        <i class="fa-solid ${item.i}"></i>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin:0; font-size:1.1rem;">${item.t}</h4>
+                                        <p style="font-size:0.85rem; color:var(--g5);">خدمة احترافية متخصصة</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline" style="width:100%; margin-top:15px; font-size:0.8rem; padding:8px;" onclick="contactService('${item.t}')">اطلب الخدمة</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ${sec.journals ? `
+                    <div style="margin-top:30px; background:var(--g0); padding:20px; border-radius:var(--r);">
+                        <h5 style="color:var(--g6); margin-bottom:15px;">مجلات مقترحة للنشر:</h5>
+                        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                            ${sec.journals.map(j => `<span style="background:var(--w); padding:5px 15px; border-radius:20px; font-size:0.85rem; border:1px solid var(--g2);">${j}</span>`).join('')}
+                        </div>
+                    </div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderExperts() {
+            const container = document.getElementById('experts-grid');
+            // Slice to show first 12 for performance on landing, or use pagination/pagination logic. Showing all 42 might be heavy but requested.
+            // Let's limit to first 12 visually for the landing page concept but code generates all.
+            container.innerHTML = EXPERTS.map((exp, i) => `
+                <div class="card expert-card" data-aos="fade-up" data-aos-delay="${(i%12)*50}">
+                    <span class="expert-badge" style="background:${exp.rank.color}15; color:${exp.rank.color}">${exp.rank.text}</span>
+                    <img src="https://picsum.photos/seed/${exp.id}/150/150" class="expert-img" alt="${exp.name}">
+                    <h4 style="margin:5px 0;">${exp.name}</h4>
+                    <div style="font-size:0.85rem; color:var(--g5); margin-bottom:5px;">${exp.title}</div>
+                    <div class="expert-rating">
+                        ${getStars(exp.rating)}
+                        <span style="color:var(--g6); font-size:0.8rem;">(${exp.rating})</span>
+                    </div>
+                    <div class="expert-stats">
+                        <span><i class="fa-solid fa-briefcase"></i> ${exp.projects}</span>
+                        <span><i class="fa-solid fa-clock"></i> ${exp.exp} سنوات</span>
+                        <span>${exp.country}</span>
+                    </div>
+                    <button class="btn btn-primary" style="width:100%;" onclick="contactExpert('${exp.name}')">طلب خدمة</button>
+                </div>
+            `).join('');
+        }
+
+        function renderPortfolio() {
+            const container = document.getElementById('portfolio-grid');
+            // Duplicate array to make it 16
+            let items = [...PORTFOLIO, ...PORTFOLIO.slice(0,4), ...PORTFOLIO.slice(0,4), ...PORTFOLIO.slice(0,2)];
+            
+            container.innerHTML = items.map((item, i) => `
+                <div class="card portfolio-card" data-aos="zoom-in" data-aos-delay="${i*50}">
+                    <div class="file-icon ${item.type === 'pdf' ? 'file-pdf' : 'file-ppt'}">
+                        <i class="fa-solid ${it
