@@ -5,951 +5,1211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AcademiaHub | المنصة الأكاديمية الشاملة</title>
     
-    <!-- Fonts -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=El+Messiri:wght@400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Icons & Libraries -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* 
-         * ==========================================
-         * CSS VARIABLES & RESET
-         * ==========================================
-         */
+        ════════════════════════════════════════════
+        🎨 CSS VARIABLES & RESET
+        ════════════════════════════════════════════
+        */
         :root {
             --p: #2563EB; --pd: #1D4ED8; --pl: #60A5FA; --pbg: #EFF6FF;
-            --s: #7C3AED; --sl: #A78BFA;
+            --s: #7C3AED; --sd: #5B21B6;
+            --success: #10B981; --danger: #EF4444; --warning: #F59E0B;
             --g9: #0F172A; --g8: #1E293B; --g7: #334155; --g6: #475569;
             --g5: #64748B; --g4: #94A3B8; --g3: #CBD5E1; --g2: #E2E8F0;
             --g1: #F1F5F9; --g0: #F8FAFC; --w: #FFFFFF;
-            --success: #10B981; --danger: #EF4444; --warning: #F59E0B;
-            --bg: #F8FAFC;
-            --r: 12px; --rl: 16px; --rxl: 24px; --rfull: 50px;
+            --r: 12px; --rl: 16px; --rxl: 20px; --rfull: 50px;
             --sh: 0 2px 12px rgba(0,0,0,.06);
             --shmd: 0 8px 30px rgba(0,0,0,.1);
             --shlg: 0 20px 60px rgba(0,0,0,.12);
             --tr: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
-            --trf: all 0.2s ease;
-            --ff: 'Cairo', 'Tajawal', sans-serif;
-            --ffd: 'El Messiri', 'Cairo', sans-serif;
+            --ff: 'Cairo','Tajawal',sans-serif;
+            --ffd: 'El Messiri','Cairo',sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        html { scroll-behavior: smooth; }
+        
         body {
             font-family: var(--ff);
-            background-color: var(--bg);
-            color: var(--g8);
-            line-height: 1.6;
+            background-color: var(--g0);
+            color: var(--g9);
             overflow-x: hidden;
+            line-height: 1.6;
         }
-        a { text-decoration: none; color: inherit; transition: var(--trf); }
+
+        a { text-decoration: none; color: inherit; transition: var(--tr); }
         ul { list-style: none; }
-        img { max-width: 100%; height: auto; display: block; }
-        
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 { font-family: var(--ffd); font-weight: 700; margin-bottom: 1rem; }
+        button { cursor: pointer; border: none; font-family: var(--ff); transition: var(--tr); }
+        input, select, textarea {
+            width: 100%; padding: 12px 16px; border: 1px solid var(--g3);
+            border-radius: var(--r); background: var(--w); color: var(--g9);
+            font-family: var(--ff); font-size: 0.95rem; transition: var(--tr);
+            margin-bottom: 16px;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--p); box-shadow: 0 0 0 3px var(--pbg);
+        }
+
+        /* Helpers */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-center { display: flex; justify-content: center; align-items: center; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .grid { display: grid; gap: 20px; }
+        .text-center { text-align: center; }
         .text-gradient {
             background: linear-gradient(135deg, var(--p), var(--s));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .container {
-            width: 90%; max-width: 1280px; margin: 0 auto; padding: 0 15px;
+        .badge {
+            padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
         }
+        .badge.success { background: #dcfce7; color: #166534; }
+        .badge.warning { background: #fef3c7; color: #92400e; }
+        .badge.primary { background: var(--pbg); color: var(--p); }
+        .badge.danger { background: #fee2e2; color: #991b1b; }
 
-        /* Buttons */
         .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 8px; padding: 10px 24px; border-radius: var(--r);
-            font-weight: 600; font-family: var(--ffd); cursor: pointer;
-            border: 2px solid transparent; transition: var(--tr);
-            font-size: 0.95rem;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 24px; border-radius: var(--r); font-weight: 700;
+            color: var(--w); background: linear-gradient(135deg, var(--p), var(--s));
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); width: 100%;
         }
-        .btn-primary { background: var(--p); color: var(--w); }
-        .btn-primary:hover { background: var(--pd); transform: translateY(-2px); }
-        .btn-outline { border-color: var(--p); color: var(--p); background: transparent; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
+        .btn:active { transform: translateY(0); }
+        .btn-outline { background: transparent; border: 2px solid var(--p); color: var(--p); box-shadow: none; }
         .btn-outline:hover { background: var(--p); color: var(--w); }
-        .btn-w { background: var(--w); color: var(--p); }
-        .btn-w:hover { background: var(--g0); }
 
         /* 
-         * ==========================================
-         * HEADER
-         * ==========================================
-         */
-        .header {
-            position: sticky; top: 0; z-index: 500;
-            background: rgba(15,23,42,0.95); backdrop-filter: blur(20px);
-            height: 72px; display: flex; align-items: center; color: var(--w);
-            border-bottom: 1px solid rgba(255,255,255,0.1); transition: var(--tr);
+        ════════════════════════════════════════════
+        🖼️ AUTH PAGE (index.html)
+        ════════════════════════════════════════════
+        */
+        #auth-view {
+            min-height: 100vh; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .header.scrolled { box-shadow: var(--shmd); height: 65px; }
-        
-        .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        
-        .logo-area { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { font-size: 1.8rem; color: var(--pl); animation: logoFloat 3s infinite ease-in-out; }
-        .logo-sub-icons { display: flex; flex-direction: column; position: absolute; margin-right: 25px; opacity: 0.3; }
-        .logo-sub-icons i { font-size: 0.7rem; margin: 2px 0; }
-        .logo-text h1 { font-size: 1.4rem; margin: 0; line-height: 1.1; color: var(--w); }
-        .logo-text span { font-size: 0.75rem; color: var(--g4); font-family: var(--ff); display: block; }
 
+        /* Background Animation */
+        .bg-blob {
+            position: absolute; border-radius: 50%; filter: blur(100px);
+            opacity: 0.2; z-index: -1; animation: float 10s infinite alternate;
+        }
+        .blob-1 { top: -100px; right: -100px; width: 500px; height: 500px; background: var(--p); animation-duration: 15s; }
+        .blob-2 { bottom: -50px; left: -50px; width: 400px; height: 400px; background: var(--s); animation-duration: 18s; }
+        .blob-3 { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: var(--warning); animation-duration: 20s; }
+        
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, -30px); } }
+
+        .particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .particle { position: absolute; background: rgba(255,255,255,0.5); border-radius: 50%; }
+
+        /* Logo */
+        .auth-logo { text-align: center; margin-bottom: 30px; z-index: 2; }
+        .auth-logo i { font-size: 3.5rem; color: var(--pl); animation: bounce 2s infinite; display: block; margin-bottom: 10px; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .auth-logo h1 { font-family: var(--ffd); font-size: 2.5rem; font-weight: 800; color: var(--w); margin-bottom: 5px; }
+        .auth-logo span { color: var(--pl); }
+        .auth-logo p { font-size: 0.9rem; color: var(--g4); letter-spacing: 1px; }
+
+        /* Marquee */
         .marquee-container {
-            flex: 1; margin: 0 40px; overflow: hidden; white-space: nowrap; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-            display: none; /* Hidden on mobile */
+            width: 100%; max-width: 600px; background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px); border-radius: var(--rfull); padding: 8px 0;
+            margin-bottom: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap; z-index: 2;
         }
-        @media(min-width: 1024px) { .marquee-container { display: block; } }
-        
-        .marquee-content { display: inline-block; animation: marqueeScroll 25s linear infinite; font-size: 0.9rem; color: var(--g3); }
-        .marquee-content span { margin: 0 15px; }
+        .marquee-content {
+            display: inline-block; padding-left: 100%; animation: marqueeScroll 20s linear infinite;
+            color: var(--w); font-size: 0.85rem; font-weight: 600;
+        }
+        @keyframes marqueeScroll { 0% { transform: translate(0, 0); } 100% { transform: translate(100%, 0); } }
 
-        .nav-actions { display: flex; align-items: center; gap: 15px; }
-        .mobile-menu-btn { display: none; font-size: 1.5rem; cursor: pointer; color: var(--w); }
-        @media(max-width: 1024px) { .mobile-menu-btn { display: block; } .desktop-auth { display: none; } }
+        /* Glass Card */
+        .auth-card {
+            background: rgba(255,255,255,0.04); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+            padding: 32px 24px; width: 100%; max-width: 480px; z-index: 2;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .auth-tabs { display: flex; margin-bottom: 24px; background: rgba(0,0,0,0.2); padding: 4px; border-radius: var(--r); }
+        .auth-tab {
+            flex: 1; padding: 10px; text-align: center; color: var(--g4); font-weight: 700;
+            border-radius: 8px; cursor: pointer; transition: var(--tr);
+        }
+        .auth-tab.active { background: var(--p); color: var(--w); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        
+        .auth-msg { margin-bottom: 15px; padding: 10px; border-radius: var(--r); font-size: 0.9rem; text-align: center; display: none; }
+        .auth-msg.error { background: #fee2e2; color: #991b1b; display: block; }
+        .auth-msg.success { background: #dcfce7; color: #166534; display: block; }
+
+        .auth-footer { margin-top: 15px; text-align: center; }
+        .auth-footer a { color: var(--pl); font-size: 0.85rem; font-weight: 700; }
+
+        .why-section {
+            margin-top: 40px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
+            max-width: 800px; width: 100%; padding: 0 20px; z-index: 2;
+        }
+        .why-item {
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: var(--r);
+            color: var(--w); display: flex; align-items: center; gap: 10px; font-size: 0.9rem;
+        }
+        
+        .main-footer {
+            margin-top: auto; padding: 20px; color: var(--g4); font-size: 0.8rem; z-index: 2;
+            display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;
+        }
 
         /* 
-         * ==========================================
-         * HERO SECTION
-         * ==========================================
-         */
-        .hero {
-            background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 50%, #0F172A 100%);
-            padding: 80px 0 60px; position: relative; overflow: hidden; color: var(--w); text-align: center;
-        }
-        #particles-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
+        ════════════════════════════════════════════
+        📊 DASHBOARD LAYOUT (dashboard.html)
+        ════════════════════════════════════════════
+        */
+        #dashboard-view { display: flex; min-height: 100vh; background: var(--g1); }
         
-        .hero-badge {
-            display: inline-block; background: rgba(37,99,235,0.2);
-            border: 1px solid var(--pl); padding: 6px 20px; border-radius: 50px;
-            font-size: 0.9rem; margin-bottom: 20px; backdrop-filter: blur(5px);
+        /* Sidebar */
+        .sidebar {
+            width: 270px; background: var(--g9); color: var(--w); height: 100vh;
+            position: fixed; right: 0; top: 0; z-index: 100; overflow-y: auto;
+            transition: var(--tr); display: flex; flex-direction: column;
         }
-        .hero h1 { font-size: 2.8rem; margin-bottom: 20px; line-height: 1.2; }
-        .hero p { font-size: 1.15rem; color: var(--g4); margin-bottom: 30px; }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid var(--g8); text-align: center; }
+        .sidebar-header i { font-size: 1.5rem; color: var(--pl); margin-bottom: 5px; }
+        .sidebar-header h2 { font-family: var(--ffd); font-size: 1.4rem; }
+        .sidebar-header span { font-size: 0.8rem; color: var(--g5); }
+
+        .user-mini-profile { padding: 20px; text-align: center; background: var(--g8); margin: 15px; border-radius: var(--r); }
+        .user-avatar {
+            width: 60px; height: 60px; background: var(--p); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+            font-weight: 700; margin: 0 auto 10px; color: var(--w);
+        }
+        .user-mini-profile h4 { font-size: 1rem; margin-bottom: 4px; }
+        .user-mini-profile p { font-size: 0.8rem; color: var(--g5); }
+
+        .nav-group { padding: 10px 15px; }
+        .nav-title { font-size: 0.75rem; text-transform: uppercase; color: var(--g5); letter-spacing: 1px; margin-bottom: 10px; display: block; }
+        .nav-link {
+            display: flex; align-items: center; gap: 12px; padding: 12px 15px;
+            color: var(--g4); border-radius: var(--r); margin-bottom: 4px; font-weight: 600; cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active { background: var(--g8); color: var(--pl); }
+        .nav-link i { width: 20px; text-align: center; }
+        .nav-link .badge { margin-right: auto; }
+
+        .sidebar-footer { margin-top: auto; padding: 20px; border-top: 1px solid var(--g8); }
+        .btn-logout { width: 100%; background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .btn-logout:hover { background: var(--danger); color: var(--w); }
+
+        /* Main Content */
+        .main-wrapper {
+            margin-right: 270px; width: calc(100% - 270px); min-height: 100vh; display: flex; flex-direction: column;
+            transition: var(--tr);
+        }
         
-        .hero-stats {
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
-            margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1);
+        /* Topbar */
+        .topbar {
+            height: 68px; background: var(--w); padding: 0 30px; display: flex; align-items: center;
+            justify-content: space-between; box-shadow: var(--sh); position: sticky; top: 0; z-index: 90;
         }
-        .stat-item h3 { color: var(--pl); margin: 0; font-size: 1.5rem; }
-        .stat-item p { font-size: 0.9rem; color: var(--g5); margin: 0; }
+        .menu-btn { font-size: 1.2rem; color: var(--g7); display: none; }
+        .breadcrumbs { font-size: 0.9rem; color: var(--g5); }
+        .breadcrumbs span { color: var(--p); font-weight: 700; }
 
-        .hero-waves { position: absolute; bottom: 0; left: 0; width: 100%; line-height: 0; transform: rotate(180deg); }
-        .hero-waves svg { width: 100%; height: 60px; fill: var(--bg); }
-
-        /* 
-         * ==========================================
-         * SECTIONS COMMON
-         * ==========================================
-         */
-        section { padding: 80px 0; position: relative; }
-        .section-header { text-align: center; margin-bottom: 50px; }
-        .section-header span { 
-            display: inline-block; background: var(--pbg); color: var(--p); 
-            padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;
+        .topbar-actions { display: flex; align-items: center; gap: 20px; }
+        .notif-btn { position: relative; font-size: 1.2rem; color: var(--g6); cursor: pointer; }
+        .notif-btn .dot {
+            position: absolute; top: -2px; right: -2px; width: 8px; height: 8px;
+            background: var(--danger); border-radius: 50%; border: 1px solid var(--w);
         }
-        .section-header h2 { font-size: 2.2rem; color: var(--g8); margin-bottom: 10px; }
-
-        /* Grid System */
-        .grid-auto { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-        .grid-md { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
-        .grid-lg { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
-
-        /* Card Styles */
-        .card {
-            background: var(--w); border-radius: var(--rxl); padding: 30px;
-            box-shadow: var(--sh); transition: var(--tr); border: 1px solid var(--g2);
-            position: relative; overflow: hidden; height: 100%;
+        .notif-dropdown {
+            position: absolute; top: 60px; left: 20px; width: 300px; background: var(--w);
+            border-radius: var(--r); box-shadow: var(--shlg); padding: 15px; border: 1px solid var(--g2);
+            display: none; z-index: 101;
         }
-        .card:hover { transform: translateY(-8px); box-shadow: var(--shmd); border-color: var(--pl); }
-        .card-icon-box {
-            width: 60px; height: 60px; border-radius: var(--r); display: flex;
-            align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px;
-        }
-        .card-img-top { width: 100%; height: 180px; object-fit: cover; border-radius: var(--rl); margin-bottom: 20px; }
+        .notif-dropdown.show { display: block; animation: fadeIn 0.2s; }
+        .notif-item { padding: 10px; border-bottom: 1px solid var(--g1); font-size: 0.85rem; color: var(--g7); }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-item .time { display: block; font-size: 0.7rem; color: var(--g5); margin-top: 4px; }
 
-        /* 
-         * ==========================================
-         * SPECIFIC SECTIONS
-         * ==========================================
-         */
-        /* Specializations */
-        .spec-card .branches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
-        .spec-card .branches span {
-            font-size: 0.75rem; background: var(--g0); color: var(--g6);
-            padding: 4px 12px; border-radius: 20px; border: 1px solid var(--g2);
-        }
+        .user-menu img { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
-        /* Services Banner */
+        /* Content Area */
+        .content-area { padding: 30px; flex: 1; }
+        
+        .page-header { margin-bottom: 30px; }
+        .page-title { font-size: 1.8rem; color: var(--g9); margin-bottom: 8px; }
+        .page-desc { color: var(--g5); }
+
+        /* Cards & Grid */
+        .card { background: var(--w); border-radius: var(--rxl); padding: 24px; box-shadow: var(--sh); border: 1px solid var(--g2); }
+        .grid-3 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+
+        /* Preloader */
+        .preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--w); z-index: 10000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: opacity 0.5s;
+        }
+        .preloader-bar { width: 200px; height: 4px; background: var(--g2); border-radius: 2px; margin-top: 20px; overflow: hidden; }
+        .preloader-progress { width: 0%; height: 100%; background: var(--p); transition: width 0.3s; }
+
+        /* Service Forms */
         .service-banner {
-            border-radius: var(--rxl); padding: 40px; color: var(--w);
-            margin-bottom: 40px; display: flex; align-items: center; gap: 20px;
+            height: 200px; border-radius: var(--rxl); background-size: cover; background-position: center;
+            position: relative; margin-bottom: 30px; display: flex; align-items: flex-end; padding: 30px;
+            color: var(--w); overflow: hidden;
         }
-        .service-banner i { font-size: 3rem; opacity: 0.9; }
+        .service-banner::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
+        .service-banner-content { position: relative; z-index: 1; width: 100%; display: flex; align-items: center; gap: 20px; }
+        .service-icon { width: 60px; height: 60px; background: var(--w); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--p); }
 
+        .wizard-steps { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px; }
+        .step {
+            flex: 1; min-width: 120px; padding: 15px; background: var(--w); border: 1px solid var(--g2);
+            border-radius: var(--r); text-align: center; color: var(--g5); position: relative;
+        }
+        .step.active { border-color: var(--p); background: var(--pbg); color: var(--p); font-weight: 700; }
+        .step.completed::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: -8px; right: -8px; width: 20px; height: 20px; background: var(--success); color: var(--w); border-radius: 50%; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; }
+
+        .form-step { display: none; animation: fadeIn 0.4s; }
+        .form-step.active { display: block; }
+        
+        .upload-area {
+            border: 2px dashed var(--g3); border-radius: var(--r); padding: 40px;
+            text-align: center; color: var(--g5); cursor: pointer; transition: var(--tr);
+        }
+        .upload-area:hover { border-color: var(--p); background: var(--pbg); }
+
+        /* Order Table */
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 15px; text-align: right; border-bottom: 1px solid var(--g1); }
+        th { color: var(--g5); font-size: 0.85rem; font-weight: 600; }
+        td { color: var(--g9); font-size: 0.95rem; }
+        
         /* Experts */
-        .expert-card { text-align: center; padding: 24px; }
-        .expert-badge {
-            position: absolute; top: 15px; right: 15px;
-            padding: 4px 10px; border-radius: var(--rfull); font-size: 0.75rem; font-weight: 700;
-        }
-        .expert-img {
-            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-            margin: 0 auto 15px; border: 4px solid var(--g0); background: var(--g2);
-        }
+        .expert-card { text-align: center; padding: 30px 20px; transition: var(--tr); position: relative; overflow: hidden; }
+        .expert-card:hover { transform: translateY(-5px); box-shadow: var(--shlg); border-color: var(--pl); }
+        .expert-img { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px; background: var(--g2); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--w); }
         .expert-rating { color: var(--warning); font-size: 0.9rem; margin: 5px 0; }
-        .expert-stats { display: flex; justify-content: center; gap: 15px; margin: 15px 0; font-size: 0.85rem; color: var(--g5); border-top: 1px solid var(--g2); padding-top: 15px; }
+        .expert-stats { display: flex; justify-content: center; gap: 15px; margin: 15px 0; font-size: 0.8rem; color: var(--g5); }
+        .expert-bio { font-size: 0.85rem; color: var(--g6); height: 60px; overflow: hidden; margin-bottom: 20px; }
+        .rank-badge { position: absolute; top: 15px; right: 15px; font-size: 1.2rem; }
 
-        /* Portfolio */
-        .portfolio-card { display: flex; align-items: flex-start; gap: 15px; padding: 20px; }
-        .file-icon { font-size: 2.5rem; padding: 15px; border-radius: var(--r); }
-        .file-pdf { color: var(--danger); background: #FEF2F2; }
-        .file-ppt { color: var(--warning); background: #FFFBEB; }
-
-        /* 
-         * ==========================================
-         * COMPONENTS (Modal, Toast, WhatsApp)
-         * ==========================================
-         */
-        /* Modal */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15,23,42,0.8); backdrop-filter: blur(5px);
-            z-index: 1000; display: flex; justify-content: center; align-items: center;
-            opacity: 0; visibility: hidden; transition: var(--tr);
-        }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content {
-            background: var(--w); width: 90%; max-width: 480px;
-            border-radius: var(--rxl); padding: 30px; position: relative;
-            transform: scale(0.9); transition: var(--tr);
-        }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-close { position: absolute; top: 20px; left: 20px; cursor: pointer; color: var(--g4); font-size: 1.2rem; }
-        .auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--g2); }
-        .auth-tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; color: var(--g5); font-weight: 600; }
-        .auth-tab.active { color: var(--p); border-bottom: 2px solid var(--p); }
-        .form-group { margin-bottom: 15px; }
-        .form-label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; }
-        .form-input {
-            width: 100%; padding: 12px; border: 1px solid var(--g2);
-            border-radius: var(--r); font-family: var(--ff); transition: var(--trf);
-        }
-        .form-input:focus { border-color: var(--p); box-shadow: 0 0 0 3px var(--pbg); }
-
-        /* Toast */
-        .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; }
-        .toast {
-            background: var(--w); color: var(--g8); padding: 15px 25px;
-            border-radius: var(--r); box-shadow: var(--shmd); margin-top: 10px;
-            border-right: 4px solid var(--p); display: flex; align-items: center; gap: 10px;
-            animation: slideInRight 0.3s ease;
-        }
+        /* Library & Forum */
+        .resource-item { display: flex; align-items: center; gap: 15px; padding: 15px; border: 1px solid var(--g2); border-radius: var(--r); margin-bottom: 10px; transition: var(--tr); }
+        .resource-item:hover { border-color: var(--p); background: var(--pbg); }
+        .file-icon { font-size: 1.5rem; color: var(--s); width: 40px; text-align: center; }
         
+        .forum-cat { padding: 20px; border-radius: var(--r); border: 1px solid var(--g2); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; background: var(--w); cursor: pointer; }
+        .forum-cat:hover { border-color: var(--p); }
+
         /* WhatsApp Float */
-        .wa-float {
-            position: fixed; bottom: 28px; left: 28px; z-index: 900;
-            width: 60px; height: 60px; background: #25D366; color: var(--w);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            animation: waPulse 2s infinite; cursor: pointer;
+        .whatsapp-float {
+            position: fixed; bottom: 24px; left: 24px; width: 60px; height: 60px;
+            background: #25D366; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; color: var(--w); font-size: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 400; animation: pulse 2s infinite;
         }
-        .wa-float::after {
-            content: 'تواصل معنا'; position: absolute; left: 70px;
-            background: var(--w); color: var(--g8); padding: 5px 12px;
-            border-radius: 8px; font-size: 0.8rem; white-space: nowrap; opacity: 0;
-            transition: var(--trf); pointer-events: none;
-        }
-        .wa-float:hover::after { opacity: 1; left: 75px; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Mobile Menu */
-        .mobile-menu {
-            position: fixed; top: 0; right: -300px; width: 300px; height: 100%;
-            background: var(--w); z-index: 1000; box-shadow: -5px 0 20px rgba(0,0,0,0.1);
-            transition: var(--tr); padding: 80px 20px 20px; overflow-y: auto;
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-wrapper { margin-right: 0; width: 100%; }
+            .menu-btn { display: block; }
+            .marquee-container { display: none; }
         }
-        .mobile-menu.active { right: 0; }
-        .mobile-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: var(--tr);
-        }
-        .mobile-overlay.active { opacity: 1; visibility: visible; }
-
-        /* Footer */
-        footer { background: var(--g9); color: var(--g4); padding: 60px 0 20px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
-        .footer-col h4 { color: var(--w); margin-bottom: 20px; font-size: 1.2rem; }
-        .footer-links li { margin-bottom: 12px; }
-        .footer-links a:hover { color: var(--pl); padding-right: 5px; }
-        .copyright { text-align: center; border-top: 1px solid var(--g7); padding-top: 20px; font-size: 0.9rem; }
-
-        /* Dashboard (Hidden by default) */
-        #dashboard-view { display: none; padding-top: 100px; min-height: 80vh; }
-        
-        /* Animations */
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-8px) rotate(2deg); }
-        }
-        @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        @keyframes waPulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
-        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        /* Media Queries */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 1.8rem; }
-            .section-header h2 { font-size: 1.8rem; }
-            .grid-auto, .grid-md, .grid-lg { grid-template-columns: 1fr; }
-            section { padding: 50px 0; }
+            .why-section { grid-template-columns: 1fr; }
+            .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .service-banner { height: 150px; padding: 15px; }
+            .wizard-steps { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Canvas for Particles -->
-    <canvas id="particles-canvas"></canvas>
+    <!-- 
+    ════════════════════════════════════════════
+    🔐 AUTH VIEW (Login/Register)
+    ════════════════════════════════════════════
+    -->
+    <div id="auth-view">
+        <div class="bg-blob blob-1"></div>
+        <div class="bg-blob blob-2"></div>
+        <div class="bg-blob blob-3"></div>
+        <div class="particles" id="particles"></div>
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="container header-inner">
-            <div class="logo-area">
-                <div style="position:relative">
-                    <i class="fa-solid fa-graduation-cap logo-icon"></i>
-                    <div class="logo-sub-icons">
-                        <i class="fa-solid fa-book-open" style="animation: logoFloat 3s infinite 0.2s"></i>
-                        <i class="fa-solid fa-pen-fancy" style="animation: logoFloat 3s infinite 0.4s"></i>
-                    </div>
-                </div>
-                <div class="logo-text">
-                    <h1>AcademiaHub</h1>
-                    <span>المنصة الأكاديمية الشاملة</span>
-                </div>
-            </div>
+        <div class="auth-logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <h1>Academia<span>Hub</span></h1>
+            <p>المنصة الأكاديمية الشاملة</p>
+        </div>
 
-            <div class="marquee-container">
-                <div class="marquee-content">
-                    <span>ثقة</span> ◆ <span>أمانة</span> ◆ <span>سرية تامة</span> ◆ <span>إنجاز</span> ◆ <span>دقة</span> ◆ <span>جودة عالية</span> ◆ <span>التزام</span> ◆ <span>خبرة</span>
-                    <span>ثقة</span> ◆ <span>أمانة</span> ◆ <span>سرية تامة</span> ◆ <span>إنجاز</span> ◆ <span>دقة</span> ◆ <span>جودة عالية</span> ◆ <span>التزام</span> ◆ <span>خبرة</span>
-                </div>
-            </div>
-
-            <div class="nav-actions">
-                <button class="btn btn-w desktop-auth" onclick="openModal('login')">دخول</button>
-                <button class="btn btn-primary desktop-auth" onclick="openModal('register')">حساب جديد</button>
-                <i class="fa-solid fa-bars mobile-menu-btn" onclick="toggleMobileMenu()"></i>
+        <div class="marquee-container">
+            <div class="marquee-content">
+                🔒 ثقة • 🤝 أمانة • 🔐 سرية تامة • 🚀 إنجاز • 🎯 دقة • ⭐ جودة عالية • ⏰ التزام • 🏅 خبرة • 🔒 ثقة • 🤝 أمانة • 🔐 سرية تامة
             </div>
         </div>
-    </header>
 
-    <!-- MOBILE MENU & OVERLAY -->
-    <div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
-    <aside class="mobile-menu">
-        <div style="margin-bottom: 20px;">
-            <img src="https://picsum.photos/seed/logo/80/80" style="width:60px; border-radius:50%; margin-bottom:10px;">
-            <h4>AcademiaHub</h4>
-        </div>
-        <ul class="footer-links">
-            <li><a href="#" onclick="scrollToSection('home')">الرئيسية</a></li>
-            <li><a href="#about" onclick="scrollToSection('about')">من نحن</a></li>
-            <li><a href="#services" onclick="scrollToSection('services')">الخدمات</a></li>
-            <li><a href="#experts" onclick="scrollToSection('experts')">الخبراء</a></li>
-            <li><a href="#" onclick="openModal('login'); toggleMobileMenu()">تسجيل الدخول</a></li>
-        </ul>
-        <div style="margin-top:30px; padding-top:20px; border-top:1px solid var(--g2);">
-            <a href="https://chat.whatsapp.com/DO6CyC5MwajLizwHNkmLHU?mode=gi_t" target="_blank" class="btn btn-success" style="width:100%; background:#25D366; color:#fff;">
-                <i class="fa-brands fa-whatsapp"></i> واتساب
-            </a>
-        </div>
-    </aside>
-
-    <!-- MAIN CONTENT (LANDING) -->
-    <main id="main-view">
-        
-        <!-- HERO -->
-        <section class="hero" id="home">
-            <div class="container hero-content" data-aos="fade-up">
-                <div class="hero-badge">🎓 المنصة الأكاديمية الأولى عربياً</div>
-                <h1>شريكك الأمثل في <br><span class="text-gradient">رحلتك الأكاديمية</span></h1>
-                <p>نقدم لك حلولاً بحثية شاملة، إشرافاً أكاديمياً متقناً، وفريقاً من الخبراء لضمان تميزك وتفوقك.</p>
-                <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="scrollToSection('services')">اطلب خدمتك الآن</button>
-                    <button class="btn btn-outline" style="border-color:var(--g4); color:var(--w);" onclick="scrollToSection('services')">استكشف خدماتنا</button>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="stat-item"><h3>+500</h3><p>مشروع مكتمل</p></div>
-                    <div class="stat-item"><h3>+30</h3><p>خبير متخصص</p></div>
-                    <div class="stat-item"><h3>+15</h3><p>دولة</p></div>
-                    <div class="stat-item"><h3>98%</h3><p>رضا العملاء</p></div>
-                </div>
-            </div>
-            <div class="hero-waves">
-                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-                </svg>
-            </div>
-        </section>
-
-        <!-- ABOUT -->
-        <section id="about">
-            <div class="container">
-                <div class="section-header" data-aos="fade-down">
-                    <span>من نحن</span>
-                    <h2>لماذا AcademiaHub؟</h2>
-                </div>
-                <div class="grid-auto" id="about-grid">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- SPECIALIZATIONS -->
-        <section style="background:var(--w)" id="specs">
-            <div class="container">
-                <div class="section-header" data-aos="fade-down">
-                    <span>التخصصات</span>
-                    <h2>جميع التخصصات والفروع</h2>
-                </div>
-                <div class="grid-auto grid-md" id="specs-grid">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- SERVICES -->
-        <section id="services">
-            <div class="container">
-                <div class="section-header" data-aos="fade-down">
-                    <span>خدماتنا</span>
-                    <h2>خدمات بحثية متكاملة</h2>
-                </div>
-                <div id="services-container">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- EXPERTS -->
-        <section style="background:var(--w)" id="experts">
-            <div class="container">
-                <div class="section-header" data-aos="fade-down">
-                    <span>فريق العمل</span>
-                    <h2>خبراء أكاديميون متميزون</h2>
-                </div>
-                <div class="grid-auto" id="experts-grid">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- PORTFOLIO -->
-        <section id="portfolio">
-            <div class="container">
-                <div class="section-header" data-aos="fade-down">
-                    <span>أعمالنا</span>
-                    <h2>نماذج من الأعمال السابقة</h2>
-                </div>
-                <div class="grid-auto" id="portfolio-grid">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- LIBRARY -->
-        <section id="library">
-            <div class="container">
-                <div class="section-header" data-aos="fade-down">
-                    <span>المكتبة</span>
-                    <h2>قوالب وأدوات مجانية</h2>
-                </div>
-                <div class="grid-auto grid-md" id="library-grid">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section style="background:var(--g9); position:relative; overflow:hidden;">
-            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:300px; height:300px; background:var(--p); filter:blur(150px); opacity:0.3; border-radius:50%;"></div>
-            <div class="container" style="position:relative; z-index:2; text-align:center;">
-                <div class="card" style="background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); max-width:600px; margin:0 auto;">
-                    <i class="fa-regular fa-paper-plane" style="font-size:3rem; color:var(--pl); margin-bottom:20px; display:block;"></i>
-                    <h2 style="color:var(--w);">هل أنت مستعد للبدء؟</h2>
-                    <p style="color:var(--g4); margin-bottom:30px;">انضم إلى آلاف الباحثين والطلاب الذين حققوا التميز معنا.</p>
-                    <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
-                        <button class="btn btn-primary" onclick="openModal('register')">ابدأ الآن - أنشئ حسابك</button>
-                        <button class="btn btn-outline" style="border-color:var(--g5); color:var(--g4);" onclick="openModal('login')">لدي حساب بالفعل</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- DASHBOARD VIEW (Hidden until login) -->
-    <section id="dashboard-view" class="container">
-        <div class="section-header">
-            <h2>لوحة التحكم</h2>
-            <p>أهلاً بك، <span id="user-name-display" class="text-gradient">العضو</span></p>
-        </div>
-        
-        <div style="display:grid; grid-template-columns: 250px 1fr; gap:30px; align-items:start;">
-            <!-- Sidebar -->
-            <div class="card" style="padding:20px;">
-                <ul class="footer-links">
-                    <li style="padding:10px; background:var(--pbg); border-radius:8px; color:var(--p); font-weight:700;">الرئيسية</li>
-                    <li><a href="#">طلباتي</a></li>
-                    <li><a href="#">الرسائل</a></li>
-                    <li><a href="#">الملف الشخصي</a></li>
-                    <li style="margin-top:20px; border-top:1px solid var(--g2); pt:10px;">
-                        <a href="#" onclick="logout()" style="color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Content -->
-            <div class="card">
-                <h3>نظرة عامة</h3>
-                <div class="grid-auto" style="margin-bottom:30px;">
-                    <div style="background:var(--g0); padding:15px; border-radius:12px; text-align:center;">
-                        <h4 style="color:var(--p); margin:0; font-size:1.8rem;">0</h4>
-                        <span style="font-size:0.85rem; color:var(--g5);">طلبات نشطة</span>
-                    </div>
-                    <div style="background:var(--g0); padding:15px; border-radius:12px; text-align:center;">
-                        <h4 style="color:var(--success); margin:0; font-size:1.8rem;">0</h4>
-                        <span style="font-size:0.85rem; color:var(--g5);">مكتملة</span>
-                    </div>
-                </div>
-                
-                <div style="text-align:center; padding:40px; border:2px dashed var(--g2); border-radius:12px;">
-                    <i class="fa-solid fa-folder-open" style="font-size:3rem; color:var(--g3); margin-bottom:15px;"></i>
-                    <p style="color:var(--g5);">لا توجد طلبات حالياً</p>
-                    <button class="btn btn-primary" style="margin-top:15px;" onclick="window.location.reload()">طلب خدمة جديدة</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <div class="logo-area" style="margin-bottom:20px;">
-                        <i class="fa-solid fa-graduation-cap" style="color:var(--pl); font-size:1.5rem;"></i>
-                        <h4 style="margin:0 0 10px; color:var(--w);">AcademiaHub</h4>
-                    </div>
-                    <p>المنصة الرائدة في تقديم الخدمات الأكاديمية والبحثية بجودة عالية واحترافية تامة.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>روابط سريعة</h4>
-                    <ul class="footer-links">
-                        <li><a href="#about">من نحن</a></li>
-                        <li><a href="#services">الخدمات</a></li>
-                        <li><a href="#experts">فريق العمل</a></li>
-                        <li><a href="#">سياسة الخصوصية</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>تواصل معنا</h4>
-                    <ul class="footer-links">
-                        <li><i class="fa-solid fa-envelope"></i> scottmcnamara316@gmail.com</li>
-                        <li><i class="fa-brands fa-whatsapp"></i> المجموعة الدعم</li>
-                    </ul>
-                    <div style="display:flex; gap:10px; margin-top:20px;">
-                        <a href="#" style="background:var(--g7); width:35px; height:35px; display:flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" style="background:var(--g7); width:35px; height:35px; display:flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" style="background:var(--g7); width:35px; height:35px; display:flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-brands fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                &copy; <span id="year"></span> AcademiaHub. جميع الحقوق محفوظة.
-            </div>
-        </div>
-    </footer>
-
-    <!-- WHATSAPP FLOAT -->
-    <a href="https://chat.whatsapp.com/DO6CyC5MwajLizwHNkmLHU?mode=gi_t" target="_blank" class="wa-float">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
-    <!-- AUTH MODAL -->
-    <div class="modal-overlay" id="auth-modal">
-        <div class="modal-content">
-            <i class="fa-solid fa-xmark modal-close" onclick="closeModal()"></i>
-            
+        <div class="auth-card">
             <div class="auth-tabs">
-                <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">تسجيل الدخول</div>
-                <div class="auth-tab" id="tab-register" onclick="switchTab('register')">حساب جديد</div>
+                <div class="auth-tab active" onclick="switchAuthTab('login')">تسجيل الدخول</div>
+                <div class="auth-tab" onclick="switchAuthTab('register')">حساب جديد</div>
             </div>
 
-            <!-- Login Form -->
-            <form id="login-form" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label class="form-label">البريد الإلكتروني</label>
-                    <input type="email" class="form-input" required placeholder="example@mail.com">
+            <div id="loginForm">
+                <input type="email" id="loginEmail" placeholder="البريد الإلكتروني" required>
+                <input type="password" id="loginPass" placeholder="كلمة المرور" required minlength="8">
+                <button class="btn" onclick="login()">
+                    دخول <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="auth-footer">
+                    <a href="#" onclick="alert('سيتم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني')">نسيت كلمة المرور؟</a>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">كلمة المرور</label>
-                    <input type="password" class="form-input" required placeholder="********">
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">دخول</button>
-            </form>
+            </div>
 
-            <!-- Register Form -->
-            <form id="register-form" style="display:none;" onsubmit="handleRegister(event)">
-                <div class="form-group">
-                    <label class="form-label">الاسم الأول</label>
-                    <input type="text" id="reg-fname" class="form-input" required>
+            <div id="registerForm" class="hidden">
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="text" id="regFName" placeholder="الاسم الأول" required>
+                    <input type="text" id="regLName" placeholder="الاسم الأخير" required>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">البريد الإلكتروني</label>
-                    <input type="email" id="reg-email" class="form-input" required>
+                <input type="email" id="regEmail" placeholder="البريد الإلكتروني" required>
+                <select id="regLevel" required>
+                    <option value="">المستوى الأكاديمي</option>
+                    <option value="بكالوريوس">بكالوريوس</option>
+                    <option value="ماجستير">ماجستير</option>
+                    <option value="دكتوراه">دكتوراه</option>
+                    <option value="باحث">باحث</option>
+                </select>
+                <select id="regField" required>
+                    <option value="">التخصص العام</option>
+                    <option value="الطب">الطب</option>
+                    <option value="الهندسة">الهندسة</option>
+                    <option value="العلوم">العلوم</option>
+                    <option value="الاجتماعية">الاجتماعية</option>
+                    <option value="الإنسانية">الإنسانية</option>
+                    <option value="الإدارة">الإدارة</option>
+                    <option value="القانون">القانون</option>
+                </select>
+                <input type="password" id="regPass" placeholder="كلمة المرور (8 أحرف)" required minlength="8">
+                <input type="password" id="regPassConfirm" placeholder="تأكيد كلمة المرور" required>
+                <div style="margin-bottom: 15px; display: flex; gap: 8px; align-items: center;">
+                    <input type="checkbox" id="regTerms" style="width: auto; margin: 0;" required>
+                    <label for="regTerms" style="font-size: 0.85rem; color: var(--g5);">أوافق على الشروط والأحكام</label>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">المستوى الأكاديمي</label>
-                    <select class="form-input" id="reg-level">
-                        <option>طالب</option>
-                        <option>ماجستير</option>
-                        <option>دكتوراه</option>
-                        <option>أكاديمي</option>
-                    </select>
+                <button class="btn" onclick="register()">إنشاء حساب</button>
+            </div>
+            
+            <div id="authMsg" class="auth-msg"></div>
+        </div>
+
+        <div class="why-section">
+            <div class="why-item"><i class="fa-solid fa-user-graduate text-primary"></i> خبراء متخصصون</div>
+            <div class="why-item"><i class="fa-solid fa-lock text-primary"></i> سرية تامة</div>
+            <div class="why-item"><i class="fa-solid fa-star text-primary"></i> جودة عالية</div>
+            <div class="why-item"><i class="fa-solid fa-earth-americas text-primary"></i> جميع التخصصات</div>
+        </div>
+
+        <footer class="main-footer">
+            © 2024 AcademiaHub. جميع الحقوق محفوظة.
+            <a href="#">سياسة الخصوصية</a> | <a href="#">الشروط والأحكام</a> | <a href="#">اتصل بنا</a>
+        </footer>
+    </div>
+
+    <!-- 
+    ════════════════════════════════════════════
+    📊 DASHBOARD VIEW
+    ════════════════════════════════════════════
+    -->
+    <div id="dashboard-view" class="hidden">
+        
+        <!-- Preloader -->
+        <div id="preloader" class="preloader">
+            <i class="fa-solid fa-graduation-cap fa-3x" style="color: var(--p); animation: bounce 1s infinite;"></i>
+            <div class="preloader-bar"><div class="preloader-progress" id="progressBar"></div></div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h2>AcademiaHub</h2>
+                <span>المنصة الأكاديمية</span>
+            </div>
+            
+            <div class="user-mini-profile">
+                <div class="user-avatar" id="sidebarAvatar">م</div>
+                <h4 id="sidebarName">اسم المستخدم</h4>
+                <p id="sidebarLevel">المستوى الأكاديمي</p>
+            </div>
+
+            <nav style="flex: 1; overflow-y: auto;">
+                <div class="nav-group">
+                    <span class="nav-title">القسم الرئيسي</span>
+                    <div class="nav-link active" onclick="navigate('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
+                    <div class="nav-link" onclick="navigate('orders')">
+                        <i class="fa-solid fa-list-check"></i> طلباتي 
+                        <span class="badge primary" id="ordersBadge">0</span>
+                    </div>
+                    <div class="nav-link" onclick="navigate('messages')"><i class="fa-solid fa-comments"></i> المراسلات</div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">كلمة المرور</label>
-                    <input type="password" class="form-input" required>
+
+                <div class="nav-group">
+                    <span class="nav-title">الخدمات الأكاديمية</span>
+                    <div class="nav-link" onclick="navigate('thesis')"><i class="fa-solid fa-pen-nib"></i> الرسائل الجامعية</div>
+                    <div class="nav-link" onclick="navigate('publication')"><i class="fa-solid fa-scroll"></i> النشر العلمي</div>
+                    <div class="nav-link" onclick="navigate('translation')"><i class="fa-solid fa-language"></i> الترجمة الأكاديمية</div>
+                    <div class="nav-link" onclick="navigate('statistics')"><i class="fa-solid fa-chart-pie"></i> التحليل الإحصائي</div>
+                    <div class="nav-link" onclick="navigate('plagiarism')"><i class="fa-solid fa-magnifying-glass"></i> فحص الاقتباس</div>
+                    <div class="nav-link" onclick="navigate('graduation')"><i class="fa-solid fa-award"></i> مشاريع التخرج</div>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">تسجيل</button>
-            </form>
+
+                <div class="nav-group">
+                    <span class="nav-title">المجتمع والمعرفة</span>
+                    <div class="nav-link" onclick="navigate('experts')"><i class="fa-solid fa-chalkboard-user"></i> خبراؤنا</div>
+                    <div class="nav-link" onclick="navigate('library')"><i class="fa-solid fa-book"></i> مكتبة النماذج</div>
+                    <div class="nav-link" onclick="navigate('forum')"><i class="fa-solid fa-users"></i> المجتمع الأكاديمي</div>
+                </div>
+            </nav>
+
+            <div class="nav-group sidebar-footer">
+                <a href="https://chat.whatsapp.com/DO6CyC5MwajLizwHNkmLHU?mode=gi_t" target="_blank" class="btn" style="background: #25D366; margin-bottom: 10px;">
+                    <i class="fa-brands fa-whatsapp"></i> تواصل واتساب
+                </a>
+                <a href="mailto:scottmcnamara316@gmail.com" class="btn btn-outline" style="margin-bottom: 10px;">
+                    <i class="fa-solid fa-envelope"></i> راسلنا
+                </a>
+                <button class="btn btn-logout" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
+                </button>
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="flex-center" style="gap: 20px;">
+                    <div class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+                    <div class="breadcrumbs">
+                        الرئيسية > <span id="pageTitleDisplay">الرئيسية</span>
+                    </div>
+                </div>
+
+                <div class="topbar-actions">
+                    <div class="notif-btn" onclick="toggleNotifs()">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="dot" id="notifDot" style="display: none;"></span>
+                        <div class="notif-dropdown" id="notifDropdown">
+                            <div id="notifList">
+                                <div class="notif-item text-center">لا توجد إشعارات</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-avatar" style="width: 35px; height: 35px; background: var(--g2); display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <i class="fa-solid fa-user" style="color: var(--g5);"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Dynamic Content -->
+            <main class="content-area" id="mainContent">
+                <!-- Content Injected via JS -->
+            </main>
         </div>
     </div>
 
-    <!-- TOAST CONTAINER -->
-    <div class="toast-container" id="toast-container"></div>
+    <!-- WhatsApp Float -->
+    <a href="https://chat.whatsapp.com/DO6CyC5MwajLizwHNkmLHU?mode=gi_t" target="_blank" class="whatsapp-float">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
-    <!-- SCRIPTS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
+    <!-- 
+    ════════════════════════════════════════════
+    ⚙️ JAVASCRIPT LOGIC
+    ════════════════════════════════════════════
+    -->
     <script>
-        /* 
-         * ==========================================
-         * DATA STRUCTURES
-         * ==========================================
-         */
-        
-        const SPECS = [
-            { name: "الطب والعلوم الصحية", count: 15, img: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&q=80", icon: "fa-stethoscope", branches: ["طب عام", "جراحة", "صيدلة", "تمريض"] },
-            { name: "الهندسة", count: 15, img: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&q=80", icon: "fa-cogs", branches: ["برمجيات", "مدني", "ميكانيك", "كهرباء"] },
-            { name: "العلوم الطبيعية", count: 10, img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&q=80", icon: "fa-flask", branches: ["فيزياء", "كيمياء", "أحياء", "فلك"] },
-            { name: "العلوم الاجتماعية", count: 7, img: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&q=80", icon: "fa-users", branches: ["علم اجتماع", "إعلام", "خدمة اجتماعية"] },
-            { name: "العلوم الإنسانية", count: 9, img: "https://images.unsplash.com/photo-1491841573634-28140fc7ced7?w=400&q=80", icon: "fa-book", branches: ["تاريخ", "جغرافيا", "فلسفة", "لغة عربية"] },
-            { name: "الإدارة والاقتصاد", count: 8, img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80", icon: "fa-chart-line", branches: ["محاسبة", "تسويق", "مالية", "إدارة أعمال"] },
-            { name: "القانون والأنظمة", count: 7, img: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&q=80", icon: "fa-scale-balanced", branches: ["قانون خاص", "قانون عام", "شرعية"] }
+        // --- DATA & CONFIG ---
+        const DB_USERS = 'ahu_users';
+        const DB_CURR_USER = 'ahu_current_user';
+        const DB_ORDERS = 'ahu_orders';
+        const DB_NOTIFS = 'ahu_notifs';
+
+        const majors = [
+            "الطب البشري", "طب الأسنان", "الصيدلة", "التمريض", "الصحة العامة",
+            "الهندسة المدنية", "هندسة الميكانيكا", "الهندسة الكهربائية", "الحاسوب والذكاء الاصطناعي", "العمارة",
+            "الفيزياء", "الكيمياء", "الأحياء", "الرياضيات", "الإحصاء",
+            "علم النفس", "علم الاجتماع", "الإعلام", "التاريخ", "الجغرافيا",
+            "الأدب العربي", "اللغة الإنجليزية", "التربية", "الفلسفة",
+            "إدارة الأعمال", "المحاسبة", "التسويق", "الاقتصاد", "المالية",
+            "القانون العام", "القانون التجاري", "القانون الدولي", "القانون الجنائي"
         ];
 
-        const ABOUT_DATA = [
-            { title: "خبراء متخصصون", icon: "fa-user-graduate", color: "var(--p)" },
-            { title: "سرية تامة", icon: "fa-lock", color: "var(--success)" },
-            { title: "التزام بالمواعيد", icon: "fa-clock", color: "var(--warning)" },
-            { title: "دعم متواصل", icon: "fa-headset", color: "var(--s)" }
+        const experts = [
+            // الطب
+            { name: "أ.د. عبدالرحمن القحطاني", field: "طب بشري-باطنية", spec: "الطب", rating: 4.9, projects: 62, exp: 15, bio: "خبرة واسعة في البحوث الطبية السريرية والمراجعات المنهجية." },
+            { name: "د. نورة الشمري", field: "طب أسنان-تقويم", spec: "الطب", rating: 4.8, projects: 38, exp: 10, bio: "متخصصة في تقويم الأسنان والأبحاث التجريبية المعملية." },
+            { name: "د. فيصل المطيري", field: "صيدلة سريرية", spec: "الطب", rating: 4.7, projects: 45, exp: 12, bio: "خبير في التفاعلات الدوائية والبحوث الصيدلانية." },
+            { name: "د. منى العتيبي", field: "تمريض-عناية مركزة", spec: "الطب", rating: 4.6, projects: 29, exp: 8, bio: "باحثة في جودة التمريض ورعاية الحالات الحرجة." },
+            { name: "أ.د. خالد السبيعي", field: "صحة عامة-وبائيات", spec: "الطب", rating: 4.9, projects: 55, exp: 18, bio: "استاذ وبائيات وإحصاء صحي، منشور في مجلات Q1." },
+            // الهندسة
+            { name: "د. سارة الأحمدي", field: "ذكاء اصطناعي", spec: "الهندسة", rating: 4.9, projects: 48, exp: 11, bio: "متخصصة في تعلم الآلة والشبكات العصبية." },
+            { name: "د. عمر الحربي", field: "هندسة مدنية-إنشاءات", spec: "الهندسة", rating: 4.8, projects: 41, exp: 13, bio: "خبير في مواد البناء والإنشاءات المستدامة." },
+            { name: "د. ليلى القاسم", field: "هندسة كهربائية-اتصالات", spec: "الهندسة", rating: 4.7, projects: 35, exp: 9, bio: "باحثة في شبكات 5G وتقنيات الاتصال الحديثة." },
+            { name: "د. محمد العمري", field: "أمن سيبراني", spec: "الهندسة", rating: 4.8, projects: 52, exp: 14, bio: "خبير أمن معلومات وتشفير وحماية البيانات." },
+            { name: "د. أحمد الشهري", field: "هندسة ميكانيكية-طاقة", spec: "الهندسة", rating: 4.7, projects: 33, exp: 10, bio: "متخصص في الطاقة المتجددة وكفاءة الأنظمة الميكانيكية." },
+            // Sciences
+            { name: "د. محمد القحطاني", field: "إحصاء وتحليل بيانات", spec: "العلوم", rating: 4.8, projects: 58, exp: 16, bio: "خبير إحصاء باستخدام SPSS, R, Python." },
+            { name: "د. عبير الرشيدي", field: "كيمياء تحليلية", spec: "العلوم", rating: 4.6, projects: 24, exp: 7, bio: "بحوث في الطرق الكيميائية الطيفية." },
+            { name: "د. طارق الشمري", field: "أحياء جزيئية", spec: "العلوم", rating: 4.7, projects: 31, exp: 9, bio: "أبحاث الجينات والتكنولوجيا الحيوية." },
+            { name: "د. هبة اليوسف", field: "فيزياء طبية", spec: "العلوم", rating: 4.5, projects: 19, exp: 5, bio: "تصوير طبي وتشخيص بالفيزياء." },
+            // Social
+            { name: "د. عبدالله المطيري", field: "علم اجتماع", spec: "الاجتماعية", rating: 4.7, projects: 36, exp: 12, bio: "باحث في قضايا المجتمع السعودي والتغير الاجتماعي." },
+            { name: "د. سلمى الحربي", field: "علم نفس سريري", spec: "الاجتماعية", rating: 4.8, projects: 42, exp: 11, bio: "تشخيص وعلاج الاضطرابات النفسية والبحوث النفسية." },
+            { name: "د. وليد القحطاني", field: "علوم سياسية", spec: "الاجتماعية", rating: 4.5, projects: 22, exp: 8, bio: "تحليل السياسات العامة والعلاقات الدولية." },
+            { name: "د. نادية العجمي", field: "إعلام واتصال", spec: "الاجتماعية", rating: 4.6, projects: 28, exp: 9, bio: "تأثير وسائل التواصل الاجتماعي على الرأي العام." },
+            // Humanities
+            { name: "د. ليلى العتيبي", field: "أدب عربي", spec: "الإنسانية", rating: 4.7, projects: 25, exp: 10, bio: "نقد أدبي وبحوث في التراث العربي." },
+            { name: "د. إبراهيم الدوسري", field: "تاريخ إسلامي", spec: "الإنسانية", rating: 4.5, projects: 18, exp: 7, bio: "مؤرخ متخصص في العصور الإسلامية الوسطى." },
+            { name: "د. خالد العسيري", field: "لغويات وترجمة", spec: "الإنسانية", rating: 4.6, projects: 40, exp: 15, bio: "خبير في اللسانيات والترجمة الفورية." },
+            { name: "د. هناء الشهري", field: "أصول تربية", spec: "الإنسانية", rating: 4.4, projects: 15, exp: 5, bio: "مناهج تعليمية وطرق تدريس حديثة." },
+            // Business
+            { name: "د. سلطان المالكي", field: "إدارة أعمال-استراتيجية", spec: "الإدارة", rating: 4.7, projects: 44, exp: 12, bio: "تخطيط استراتيجي وإدارة مؤسسية." },
+            { name: "د. ريم الفيصل", field: "تسويق رقمي", spec: "الإدارة", rating: 4.6, projects: 32, exp: 8, bio: "سوشيال ميديا ماركتنج وسلوك المستهلك." },
+            { name: "د. عبدالعزيز العنزي", field: "محاسبة ومراجعة", spec: "الإدارة", rating: 4.5, projects: 26, exp: 10, bio: "محاسبة مالية وتدقيق حسابات." },
+            { name: "د. نورة القحطاني", field: "اقتصاد وتمويل", spec: "الإدارة", rating: 4.8, projects: 38, exp: 11, bio: "الأسواق المالية والاقتصاد الكلي." },
+            // Law
+            { name: "د. فاطمة الزهراني", field: "قانون جنائي", spec: "القانون", rating: 4.6, projects: 20, exp: 9, bio: "فقه جنائي وتشريعات عقابية." },
+            { name: "د. محمد الدوسري", field: "قانون تجاري", spec: "القانون", rating: 4.7, projects: 34, exp: 14, bio: "أبحاث في قانون الشركات والأعمال التجارية." },
+            { name: "د. سارة العنزي", field: "قانون دولي", spec: "القانون", rating: 4.5, projects: 16, exp: 6, bio: "القانون الدولي العام والمعاهدات." },
+            { name: "د. تركي المالكي", field: "قانون عام", spec: "القانون", rating: 4.6, projects: 28, exp: 11, bio: "النظرية العامة للقانون والقانون الدستوري." }
         ];
 
-        const SERVICES_SECTIONS = [
-            {
-                title: "رسائل الماجستير والدكتوراه",
-                gradient: "linear-gradient(135deg,#1E3A5F,#2563EB)",
-                icon: "fa-graduation-cap",
-                items: [
-                    { t: "اقتراح عنوان الرسالة", i: "fa-lightbulb", c: "#2563EB" },
-                    { t: "كتابة البروبوزل Proposal", i: "fa-file-lines", c: "#3B82F6" },
-                    { t: "توفير المصادر والمراجع", i: "fa-book-open", c: "#60A5FA" },
-                    { t: "التدقيق الإملائي واللغوي", i: "fa-spell-check", c: "#10B981" },
-                    { t: "إعادة التنسيق حسب دليل الجامعة", i: "fa-paint-roller", c: "#F59E0B" },
-                    { t: "المساعدة في كتابة أحد الفصول", i: "fa-pen-to-square", c: "#8B5CF6" },
-                    { t: "الإشراف على كتابة الرسالة كاملة", i: "fa-user-graduate", c: "#EC4899" },
-                    { t: "المساعدة في تحليل البيانات", i: "fa-chart-bar", c: "#06B6D4" },
-                    { t: "إعداد عرض المناقشة Presentation", i: "fa-list-check", c: "#6366F1" }
-                ]
-            },
-            {
-                title: "مذكرات التخرج",
-                gradient: "linear-gradient(135deg,#0F766E,#14B8A6)",
-                icon: "fa-scroll",
-                items: [
-                    { t: "اقتراح موضوع", i: "fa-lightbulb", c: "#0F766E" },
-                    { t: "كتابة خطة", i: "fa-list-ol", c: "#14B8A6" },
-                    { t: "جمع مصادر", i: "fa-book", c: "#2DD4BF" },
-                    { t: "كتابة كاملة", i: "fa-pen-nib", c: "#5EEAD4" },
-                    { t: "تدقيق", i: "fa-check-double", c: "#99F6E4" },
-                    { t: "تنسيق نهائي", i: "fa-file-pdf", c: "#CCFBF1" }
-                ]
-            },
-            {
-                title: "مشاريع التخرج",
-                gradient: "linear-gradient(135deg,#9A3412,#F97316)",
-                icon: "fa-laptop-code",
-                items: [
-                    { t: "اقتراح فكرة", i: "fa-brain", c: "#9A3412" },
-                    { t: "خطة مشروع", i: "fa-project-diagram", c: "#EA580C" },
-                    { t: "تنفيذ برمجي", i: "fa-code", c: "#F97316" },
-                    { t: "تقرير", i: "fa-file-alt", c: "#FB923C" },
-                    { t: "عرض تقديمي", i: "fa-video", c: "#FDBA74" }
-                ]
-            },
-            {
-                title: "الأوراق البحثية",
-                gradient: "linear-gradient(135deg,#6D28D9,#8B5CF6)",
-                icon: "fa-newspaper",
-                items: [
-                    { t: "اقتراح فكرة", i: "fa-lightbulb", c: "#6D28D9" },
-                    { t: "كتابة", i: "fa-pen-fancy", c: "#7C3AED" },
-                    { t: "تحرير", i: "fa-edit", c: "#8B5CF6" },
-                    { t: "إدارة استشهادات", i: "fa-quote-right", c: "#A78BFA" },
-                    { t: "تنسيق", i: "fa-align-right", c: "#C4B5FD" }
-                ]
-            },
-            {
-                title: "النشر الدولي والمحلي",
-                gradient: "linear-gradient(135deg,#075985,#0284C7)",
-                icon: "fa-globe",
-                items: [
-                    { t: "اختيار المجلة", i: "fa-search", c: "#075985" },
-                    { t: "تنسيق للقالب", i: "fa-file-powerpoint", c: "#0284C7" },
-                    { t: "Cover Letter", i: "fa-envelope-open-text", c: "#0EA5E9" },
-                    { t: "فحص اقتباس", i: "fa-percentage", c: "#38BDF8" },
-                    { t: "متابعة تحكيم", i: "fa-comments", c: "#7DD3FC" }
-                ],
-                journals: ["Nature", "Science", "IEEE Access", "Springer", "Elsevier"]
-            },
-            {
-                title: "الترجمة وفحص الاقتباس",
-                gradient: "linear-gradient(135deg,#B45309,#D97706)",
-                icon: "fa-language",
-                items: [
-                    { t: "ترجمة عربي-إنجليزي", i: "fa-language", c: "#B45309" },
-                    { t: "مراجعة Native", i: "fa-user-check", c: "#D97706" },
-                    { t: "فحص Turnitin", i: "fa-shield-halved", c: "#F59E0B" },
-                    { t: "إعادة صياغة", i: "fa-eraser", c: "#FBBF24" },
-                    { t: "تدقيق مراجع", i: "fa-list", c: "#FCD34D" }
-                ]
-            },
-            {
-                title: "التحليل الإحصائي",
-                gradient: "linear-gradient(135deg,#831843,#BE185D)",
-                icon: "fa-chart-pie",
-                items: [
-                    { t: "إحصاء وصفي", i: "fa-table", c: "#831843" },
-                    { t: "اختبارات فروض", i: "fa-vials", c: "#9D174D" },
-                    { t: "انحدار", i: "fa-chart-line", c: "#BE185D" },
-                    { t: "SEM", i: "fa-project-diagram", c: "#DB2777" },
-                    { t: "R/Python", i: "fa-code", c: "#F472B6" },
-                    { t: "SPSS", i: "fa-file-csv", c: "#FBCFE8" }
-                ]
-            },
-            {
-                title: "البرمجة والتطوير",
-                gradient: "linear-gradient(135deg,#1E293B,#334155)",
-                icon: "fa-code",
-                items: [
-                    { t: "مواقع ويب", i: "fa-globe", c: "#1E293B" },
-                    { t: "تطبيقات جوال", i: "fa-mobile-screen", c: "#334155" },
-                    { t: "أنظمة سطح مكتب", i: "fa-desktop", c: "#475569" },
-                    { t: "UI/UX", i: "fa-pen-ruler", c: "#64748B" },
-                    { t: "MATLAB", i: "fa-square-root-variable", c: "#94A3B8" },
-                    { t: "Python", i: "fa-python", c: "#CBD5E1" },
-                    { t: "قواعد بيانات", i: "fa-database", c: "#E2E8F0" }
-                ]
-            }
+        const libraryTemplates = [
+            { title: "قالب خطة بحث Proposal", type: "Word", size: "2450 KB", cat: "خطط بحث" },
+            { title: "قالب رسالة ماجستير كاملة", type: "Word", size: "3210 KB", cat: "رسائل" },
+            { title: "قالب رسالة دكتوراه", type: "Word", size: "1890 KB", cat: "رسائل" },
+            { title: "قالب ورقة علمية LaTeX", type: "LaTeX", size: "1560 KB", cat: "أوراق علمية" },
+            { title: "قالب Cover Letter", type: "Word", size: "980 KB", cat: "Cover Letter" },
+            { title: "قالب الرد على المحكمين", type: "Word", size: "1230 KB", cat: "أوراق علمية" },
+            { title: "قالب عرض تقديمي للمناقشة", type: "PPT", size: "4100 KB", cat: "عروض" },
+            { title: "قالب استبيان بحثي", type: "Word", size: "2750 KB", cat: "أوراق علمية" },
+            { title: "قالب مقابلة بحثية", type: "Word", size: "890 KB", cat: "أوراق علمية" },
+            { title: "قالب تحليل إحصائي", type: "Word", size: "1650 KB", cat: "أوراق علمية" },
+            { title: "قالب خطة بحث منهجي", type: "Word", size: "2100 KB", cat: "خطط بحث" },
+            { title: "قالب ملخص بحث Abstract", type: "Word", size: "1340 KB", cat: "أوراق علمية" }
         ];
 
-        // Helper to generate experts
-        const EXPERTS = [];
-        const COUNTRIES = ['🇸🇦', '🇲🇦', '🇩🇿', '🇮🇶', '🇯🇴', '🇱🇾', '🇬🇧', '🇺🇸', '🇫🇷', '🇩🇪', '🇪🇸', '🇮🇹', '🇯🇵'];
-        const TITLES = ['أ.د.', 'د.', 'م.'];
-        
-        SPECS.forEach((spec, i) => {
-            for(let j=0; j<6; j++) {
-                const rating = (4.0 + Math.random()).toFixed(1);
-                let rank = 'bronze';
-                if(rating >= 4.8) rank = 'diamond';
-                else if(rating >= 4.6) rank = 'gold';
-                else if(rating >= 4.4) rank = 'silver';
-                
-                const rankBadge = rank === 'diamond' ? '💎 ماسي' : rank === 'gold' ? '🥇 ذهبي' : rank === 'silver' ? '🥈 فضي' : '🥉 برونزي';
-                const rankColor = rank === 'diamond' ? '#0F172A' : rank === 'gold' ? '#B45309' : rank === 'silver' ? '#475569' : '#92400E';
-
-                EXPERTS.push({
-                    name: `الخبير ${TITLES[j%3]} ${['أحمد', 'محمد', 'سارة', 'خالد', 'ليلى', 'عمر', 'نورة', 'فهد'][j%8]} ${['العربي', 'العالم', 'المختص', 'البارع', 'المثقف', 'الدقيق'][j%6]}`,
-                    title: spec.name,
-                    rating: rating,
-                    projects: 10 + Math.floor(Math.random()*40),
-                    exp: 2 + Math.floor(Math.random()*10),
-                    country: COUNTRIES[(i+j)%COUNTRIES.length],
-                    rank: { text: rankBadge, color: rankColor },
-                    id: i*6 + j
-                });
-            }
-        });
-
-        const PORTFOLIO = [
-            { t: "رسالة ماجستير - تربية", type: "pdf", d: "منهجية بحثية كاملة" },
-            { t: "بحث علمي - طب", type: "pdf", d: "نشر في مجلة محكمة" },
-            { t: "عرض تقديمي - هندسة", type: "ppt", d: "Project Defense" },
-            { t: "مذكرة تخرج - قانون", type: "pdf", d: "تحليل قانوني مقارن" },
-            { t: "بحث اقتصاد", type: "pdf", d: "الأسواق الناشئة" },
-            { t: "رسالة دكتوراه - آداب", type: "pdf", d: "النقد الأدبي الحديث" }
-        ];
-
-        const LIBRARY = [
-            { t: "قالب LaTeX للرسائل", f: "ZIP", d: "قالب جاهز للتعديل" },
-            { t: "Cover Letter نموذجي", f: "DOCX", d: "للمجلات الدولية" },
-            { t: "خطة البحث المقترحة", f: "PDF", d: "Guide" },
-            { t: "قالب عرض PowerPoint", f: "PPTX", d: "تصميم أكاديمي احترافي" },
-            { t: "دليل APA المرجعي", f: "PDF", d: "الإصدار السابع" }
-        ];
-
-        /* 
-         * ==========================================
-         * APP LOGIC & RENDERING
-         * ==========================================
-         */
-
-        // Initialize
+        // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            AOS.init({ duration: 800, once: true });
-            document.getElementById('year').textContent = new Date().getFullYear();
-            
-            initParticles();
-            renderAll();
-            
-            // Check LocalStorage
-            const user = JSON.parse(localStorage.getItem('ahu'));
-            if(user) {
-                document.getElementById('user-name-display').textContent = user.fname;
-            }
-
-            // Header Scroll
-            window.addEventListener('scroll', () => {
-                const header = document.querySelector('.header');
-                if(window.scrollY > 50) header.classList.add('scrolled');
-                else header.classList.remove('scrolled');
-            });
+            createParticles();
+            checkAuth();
+            initPreloader();
         });
 
-        function renderAll() {
-            renderAbout();
-            renderSpecs();
-            renderServices();
-            renderExperts();
-            renderPortfolio();
-            renderLibrary();
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for(let i=0; i<50; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.width = Math.random() * 5 + 'px';
+                p.style.height = p.style.width;
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.opacity = Math.random();
+                p.style.animation = `float ${15 + Math.random()*10}s infinite alternate`;
+                container.appendChild(p);
+            }
         }
 
-        function renderAbout() {
-            const container = document.getElementById('about-grid');
-            container.innerHTML = ABOUT_DATA.map(item => `
-                <div class="card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card-icon-box" style="background:${item.color}20; color:${item.color}">
-                        <i class="fa-solid ${item.icon}"></i>
-                    </div>
-                    <h3>${item.title}</h3>
-                    <p style="color:var(--g5); font-size:0.9rem;">نقدم لك أفضل الحلول لضمان جودة العمل.</p>
-                </div>
-            `).join('');
+        function initPreloader() {
+            const bar = document.getElementById('progressBar');
+            if(bar) {
+                setTimeout(() => bar.style.width = '100%', 100);
+                setTimeout(() => {
+                    document.getElementById('preloader').style.opacity = '0';
+                    setTimeout(() => document.getElementById('preloader').classList.add('hidden'), 500);
+                }, 1200);
+            }
         }
 
-        function renderSpecs() {
-            const container = document.getElementById('specs-grid');
-            container.innerHTML = SPECS.map((spec, i) => `
-                <div class="card spec-card" data-aos="fade-up" data-aos-delay="${i*100}">
-                    <img src="${spec.img}" class="card-img-top" alt="${spec.name}">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <h4 style="margin:0;">${spec.name}</h4>
-                        <span style="font-size:0.8rem; color:var(--g5);">${spec.count} فرع</span>
-                    </div>
-                    <div class="branches">
-                        ${spec.branches.map(b => `<span>${b}</span>`).join('')}
-                        ${spec.count > 4 ? `<span>+${spec.count - 4}</span>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderServices() {
-            const container = document.getElementById('services-container');
-            container.innerHTML = SERVICES_SECTIONS.map((sec, i) => `
-                <div class="service-section" style="margin-bottom:60px;" data-aos="fade-up">
-                    <div class="service-banner" style="background:${sec.gradient}">
-                        <i class="fa-solid ${sec.icon}"></i>
-                        <div>
-                            <h2 style="margin:0; font-size:1.8rem;">${sec.title}</h2>
-                            <p style="opacity:0.9; margin:0;">حلول متكاملة لضمان نجاحك</p>
-                        </div>
-                    </div>
-                    <div class="grid-auto">
-                        ${sec.items.map(item => `
-                            <div class="card" style="border-right: 4px solid ${item.c}; padding-right:20px;">
-                                <div style="display:flex; gap:15px;">
-                                    <div style="background:${item.c}20; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:${item.c}; flex-shrink:0;">
-                                        <i class="fa-solid ${item.i}"></i>
-                                    </div>
-                                    <div>
-                                        <h4 style="margin:0; font-size:1.1rem;">${item.t}</h4>
-                                        <p style="font-size:0.85rem; color:var(--g5);">خدمة احترافية متخصصة</p>
-                                    </div>
-                                </div>
-                                <button class="btn btn-outline" style="width:100%; margin-top:15px; font-size:0.8rem; padding:8px;" onclick="contactService('${item.t}')">اطلب الخدمة</button>
-                            </div>
-                        `).join('')}
-                    </div>
-                    ${sec.journals ? `
-                    <div style="margin-top:30px; background:var(--g0); padding:20px; border-radius:var(--r);">
-                        <h5 style="color:var(--g6); margin-bottom:15px;">مجلات مقترحة للنشر:</h5>
-                        <div style="display:flex; flex-wrap:wrap; gap:10px;">
-                            ${sec.journals.map(j => `<span style="background:var(--w); padding:5px 15px; border-radius:20px; font-size:0.85rem; border:1px solid var(--g2);">${j}</span>`).join('')}
-                        </div>
-                    </div>` : ''}
-                </div>
-            `).join('');
-        }
-
-        function renderExperts() {
-            const container = document.getElementById('experts-grid');
-            // Slice to show first 12 for performance on landing, or use pagination/pagination logic. Showing all 42 might be heavy but requested.
-            // Let's limit to first 12 visually for the landing page concept but code generates all.
-            container.innerHTML = EXPERTS.map((exp, i) => `
-                <div class="card expert-card" data-aos="fade-up" data-aos-delay="${(i%12)*50}">
-                    <span class="expert-badge" style="background:${exp.rank.color}15; color:${exp.rank.color}">${exp.rank.text}</span>
-                    <img src="https://picsum.photos/seed/${exp.id}/150/150" class="expert-img" alt="${exp.name}">
-                    <h4 style="margin:5px 0;">${exp.name}</h4>
-                    <div style="font-size:0.85rem; color:var(--g5); margin-bottom:5px;">${exp.title}</div>
-                    <div class="expert-rating">
-                        ${getStars(exp.rating)}
-                        <span style="color:var(--g6); font-size:0.8rem;">(${exp.rating})</span>
-                    </div>
-                    <div class="expert-stats">
-                        <span><i class="fa-solid fa-briefcase"></i> ${exp.projects}</span>
-                        <span><i class="fa-solid fa-clock"></i> ${exp.exp} سنوات</span>
-                        <span>${exp.country}</span>
-                    </div>
-                    <button class="btn btn-primary" style="width:100%;" onclick="contactExpert('${exp.name}')">طلب خدمة</button>
-                </div>
-            `).join('');
-        }
-
-        function renderPortfolio() {
-            const container = document.getElementById('portfolio-grid');
-            // Duplicate array to make it 16
-            let items = [...PORTFOLIO, ...PORTFOLIO.slice(0,4), ...PORTFOLIO.slice(0,4), ...PORTFOLIO.slice(0,2)];
+        // --- AUTH SYSTEM ---
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('authMsg').className = 'auth-msg'; // Reset msgs
             
-            container.innerHTML = items.map((item, i) => `
-                <div class="card portfolio-card" data-aos="zoom-in" data-aos-delay="${i*50}">
-                    <div class="file-icon ${item.type === 'pdf' ? 'file-pdf' : 'file-ppt'}">
-                        <i class="fa-solid ${it
+            if(tab === 'login') {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+            } else {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.remove('hidden');
+            }
+        }
+
+        function getEl(id) { return document.getElementById(id); }
+
+        function showAuthMsg(msg, type) {
+            const el = getEl('authMsg');
+            el.textContent = msg;
+            el.className = `auth-msg ${type}`;
+        }
+
+        function register() {
+            const fname = getEl('regFName').value;
+            const lname = getEl('regLName').value;
+            const email = getEl('regEmail').value;
+            const pass = getEl('regPass').value;
+            const confirm = getEl('regPassConfirm').value;
+            const level = getEl('regLevel').value;
+            const field = getEl('regField').value;
+
+            if(!fname || !lname || !email || !pass || !level || !field) return showAuthMsg('جميع الحقول مطلوبة', 'error');
+            if(pass.length < 8) return showAuthMsg('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error');
+            if(pass !== confirm) return showAuthMsg('كلمتا المرور غير متطابقتين', 'error');
+
+            let users = JSON.parse(localStorage.getItem(DB_USERS) || '[]');
+            if(users.find(u => u.email === email)) return showAuthMsg('هذا البريد مسجل بالفعل. الرجاء تسجيل الدخول', 'error');
+
+            const newUser = { fname, lname, email, pass, level, field };
+            users.push(newUser);
+            localStorage.setItem(DB_USERS, JSON.stringify(users));
+            
+            // Auto login
+            localStorage.setItem(DB_CURR_USER, JSON.stringify(newUser));
+            showAuthMsg('تم إنشاء الحساب بنجاح! جاري الدخول...', 'success');
+            setTimeout(() => { location.reload(); }, 1500);
+        }
+
+        function login() {
+            const email = getEl('loginEmail').value;
+            const pass = getEl('loginPass').value;
+            
+            if(!email || !pass) return showAuthMsg('يرجى إدخال البريد وكلمة المرور', 'error');
+
+            let users = JSON.parse(localStorage.getItem(DB_USERS) || '[]');
+            const user = users.find(u => u.email === email);
+
+            if(!user) return showAuthMsg('هذا البريد غير مسجل. يرجى إنشاء حساب أولاً', 'error');
+            if(user.pass !== pass) return showAuthMsg('كلمة المرور غير صحيحة', 'error');
+
+            localStorage.setItem(DB_CURR_USER, JSON.stringify(user));
+            showAuthMsg('تم تسجيل الدخول بنجاح!', 'success');
+            setTimeout(() => { location.reload(); }, 1000);
+        }
+
+        function logout() {
+            localStorage.removeItem(DB_CURR_USER);
+            location.reload();
+        }
+
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem(DB_CURR_USER));
+            if(user) {
+                getEl('auth-view').classList.add('hidden');
+                getEl('dashboard-view').classList.remove('hidden');
+                setupDashboard(user);
+            } else {
+                getEl('auth-view').classList.remove('hidden');
+                getEl('dashboard-view').classList.add('hidden');
+            }
+        }
+
+        // --- DASHBOARD SYSTEM ---
+        function setupDashboard(user) {
+            getEl('sidebarName').textContent = user.fname + ' ' + user.lname;
+            getEl('sidebarLevel').textContent = user.level;
+            getEl('sidebarAvatar').textContent = user.fname.charAt(0) + user.lname.charAt(0);
+            
+            updateBadge();
+            updateNotifs();
+            navigate('home');
+        }
+
+        function toggleSidebar() {
+            getEl('sidebar').classList.toggle('open');
+        }
+
+        function navigate(page) {
+            const titleMap = {
+                'home': 'الرئيسية', 'orders': 'طلباتي', 'messages': 'المراسلات',
+                'thesis': 'الرسائل الجامعية', 'publication': 'النشر العلمي', 'translation': 'الترجمة',
+                'statistics': 'التحليل الإحصائي', 'plagiarism': 'فحص الاقتباس', 'graduation': 'مشاريع التخرج',
+                'experts': 'خبراؤنا', 'library': 'مكتبة النماذج', 'forum': 'المجتمع الأكاديمي'
+            };
+            
+            getEl('pageTitleDisplay').textContent = titleMap[page];
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            // Highlight active link logic here (simplified)
+            
+            const content = getEl('mainContent');
+            content.innerHTML = ''; // Clear current
+
+            if(page === 'home') renderHome(content);
+            else if(page === 'orders') renderOrders(content);
+            else if(page === 'experts') renderExperts(content);
+            else if(page === 'library') renderLibrary(content);
+            else if(page === 'forum') renderForum(content);
+            else renderServicePage(page, content);
+
+            // Close mobile sidebar if open
+            if(window.innerWidth <= 1024) getEl('sidebar').classList.remove('open');
+        }
+
+        function updateBadge() {
+            const orders = JSON.parse(localStorage.getItem(DB_ORDERS) || '[]');
+            const active = orders.filter(o => o.status === 'in-progress' || o.status === 'review').length;
+            const badge = getEl('ordersBadge');
+            badge.textContent = active;
+            badge.style.display = active > 0 ? 'inline-block' : 'none';
+        }
+
+        // --- RENDERING PAGES ---
+
+        function renderHome(container) {
+            container.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">مرحباً بك في AcademiaHub 👋</h1>
+                    <p class="page-desc">لوحة التحكم الخاصة بك. تابع طلباتك واستكشف خدماتنا الجديدة.</p>
+                </div>
+                <div class="grid grid-3" style="margin-bottom: 30px;">
+                    <div class="card" style="background: linear-gradient(135deg, var(--p), var(--s)); color: white;">
+                        <h3><i class="fa-solid fa-file-pen"></i> الطلبات النشطة</h3>
+                        <h1 style="font-size: 3rem; margin: 10px 0;">${JSON.parse(localStorage.getItem(DB_ORDERS) || '[]').length}</h1>
+                        <p>قم بتتبع حالة طلباتك الحالية</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa-solid fa-circle-check" style="color: var(--success);"></i> الطلبات المكتملة</h3>
+                        <h1 style="font-size: 3rem; margin: 10px 0;">0</h1>
+                        <p>ملفات جاهزة للتحميل</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa-solid fa-users" style="color: var(--warning);"></i> المجتمع</h3>
+                        <h1 style="font-size: 3rem; margin: 10px 0;">870</h1>
+                        <p>باحث ونقاش نشط اليوم</p>
+                    </div>
+                </div>
+                
+                <h3 style="margin-bottom: 20px;">الخدمات الأكثر طلباً</h3>
+                <div class="grid grid-3">
+                    <div class="card flex-center" style="flex-direction: column; cursor: pointer;" onclick="navigate('thesis')">
+                        <i class="fa-solid fa-graduation-cap fa-3x" style="color: var(--p); margin-bottom: 15px;"></i>
+                        <h4>الرسائل الجامعية</h4>
+                    </div>
+                    <div class="card flex-center" style="flex-direction: column; cursor: pointer;" onclick="navigate('statistics')">
+                        <i class="fa-solid fa-chart-simple fa-3x" style="color: var(--s); margin-bottom: 15px;"></i>
+                        <h4>التحليل الإحصائي</h4>
+                    </div>
+                    <div class="card flex-center" style="flex-direction: column; cursor: pointer;" onclick="navigate('plagiarism')">
+                        <i class="fa-solid fa-magnifying-glass-chart fa-3x" style="color: var(--danger); margin-bottom: 15px;"></i>
+                        <h4>فحص الاقتباس</h4>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOrders(container) {
+            const orders = JSON.parse(localStorage.getItem(DB_ORDERS) || '[]');
+            let html = `
+                <div class="page-header flex-between">
+                    <div>
+                        <h1 class="page-title">طلباتي</h1>
+                        <p class="page-desc">سجل كامل لجميع طلباتك الأكاديمية</p>
+                    </div>
+                </div>
+                <div class="card" style="padding: 0;">
+            `;
+
+            if(orders.length === 0) {
+                html += `<div class="text-center" style="padding: 50px; color: var(--g5);">
+                    <i class="fa-solid fa-folder-open fa-3x" style="margin-bottom: 20px;"></i>
+                    <p>لا توجد طلبات حالياً. ابدأ بتقديم طلب جديد!</p>
+                </div>`;
+            } else {
+                html += `<div class="table-responsive"><table>
+                    <thead><tr><th>رقم الطلب</th><th>الخدمة</th><th>العنوان</th><th>التاريخ</th><th>الحالة</th></tr></thead>
+                    <tbody>`;
+                orders.reverse().forEach(o => {
+                    let statusClass = o.status === 'completed' ? 'success' : (o.status === 'review' ? 'warning' : 'primary');
+                    html += `<tr>
+                        <td>${o.id}</td>
+                        <td>${o.service}</td>
+                        <td>${o.title}</td>
+                        <td>${o.date}</td>
+                        <td><span class="badge ${statusClass}">${getStatusLabel(o.status)}</span></td>
+                    </tr>`;
+                });
+                html += `</tbody></table></div>`;
+            }
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        function getStatusLabel(status) {
+            const labels = { 'in-progress': 'قيد التنفيذ', 'review': 'قيد المراجعة', 'completed': 'مكتمل' };
+            return labels[status] || status;
+        }
+
+        // --- SERVICE FORMS LOGIC ---
+        function renderServicePage(serviceType, container) {
+            const config = {
+                'thesis': { title: 'الرسائل الجامعية', icon: 'fa-graduation-cap', img: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&q=80' },
+                'publication': { title: 'النشر العلمي', icon: 'fa-scroll', img: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&q=80' },
+                'translation': { title: 'الترجمة الأكاديمية', icon: 'fa-language', img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80' },
+                'statistics': { title: 'التحليل الإحصائي', icon: 'fa-chart-pie', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80' },
+                'plagiarism': { title: 'فحص الاقتباس', icon: 'fa-magnifying-glass', img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80' },
+                'graduation': { title: 'مشاريع التخرج', icon: 'fa-award', img: 'https://images.unsplash.com/photo-1523050854058-8df90910b683?w=1200&q=80' },
+            };
+            const s = config[serviceType];
+
+            container.innerHTML = `
+                <div class="service-banner" style="background-image: url('${s.img}');">
+                    <div class="service-banner-content">
+                        <div class="service-icon"><i class="fa-solid ${s.icon}"></i></div>
+                        <div>
+                            <h2 style="font-size: 2rem; margin-bottom: 5px;">${s.title}</h2>
+                            <p style="opacity: 0.9;">قم بملء الاستمارة أدناه بدقة للحصول على خدمة احترافية</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wizard-steps">
+                    <div class="step active" id="step1-ind">1. معلومات أساسية</div>
+                    <div class="step" id="step2-ind">2. تفاصيل الخدمة</div>
+                    <div class="step" id="step3-ind">3. متطلبات ورفع</div>
+                </div>
+
+                <form id="serviceForm" onsubmit="event.preventDefault(); submitOrder('${s.title}');">
+                    <div class="card">
+                        <!-- Step 1 -->
+                        <div id="step1" class="form-step active">
+                            <h3 style="margin-bottom: 20px;">المعلومات الأساسية</h3>
+                            ${getCommonFields(serviceType)}
+                            <div style="text-align: left;"><button type="button" class="btn" onclick="nextStep(2)">التالي <i class="fa-solid fa-arrow-left"></i></button></div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div id="step2" class="form-step">
+                            <h3 style="margin-bottom: 20px;">تفاصيل المشروع</h3>
+                            ${getSpecificFields(serviceType)}
+                            <div class="flex-between">
+                                <button type="button" class="btn btn-outline" onclick="nextStep(1)">السابق</button>
+                                <button type="button" class="btn" onclick="nextStep(3)">التالي <i class="fa-solid fa-arrow-left"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div id="step3" class="form-step">
+                            <h3 style="margin-bottom: 20px;">الملفات والملاحظات النهائية</h3>
+                            ${getUploadFields(serviceType)}
+                            <div class="flex-between">
+                                <button type="button" class="btn btn-outline" onclick="nextStep(2)">السابق</button>
+                                <button type="submit" class="btn" id="submitBtn">تقديم الطلب <i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            `;
+        }
+
+        function getCommonFields(type) {
+            let majorOpts = majors.map(m => `<option value="${m}">${m}</option>`).join('');
+            return `
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    ${type !== 'graduation' ? `
+                    <select name="level" required>
+                        <option value="">المستوى الدراسي</option>
+                        <option value="ماجستير">ماجستير</option>
+                        <option value="دكتوراه">دكتوراه</option>
+                    </select>` : `
+                    <select name="level" required>
+                        <option value="">المرحلة الدراسية</option>
+                        <option value="بكالوريوس">بكالوريوس</option>
+                        <option value="دبلوم">دبلوم</option>
+                    </select>`}
+                    <select name="major" required>
+                        <option value="">التخصص الدقيق</option>
+                        ${majorOpts}
+                    </select>
+                </div>
+                <input type="text" name="university" placeholder="اسم الجامعة" ${type === 'graduation' || type === 'thesis' ? 'required' : ''}>
+            `;
+        }
+
+        function getSpecificFields(type) {
+            if(type === 'thesis') return `
+                <label style="display:block; margin-bottom:8px; font-weight:600;">مرحلة البحث الحالية:</label>
+                <select name="stage" required>
+                    <option value="title">لم أحدد العنوان بعد</option>
+                    <option value="proposal">أحتاج كتابة خطة البحث</option>
+                    <option value="chapter1">لدي خطة وأحتاج البدء بالفصل الأول</option>
+                    <option value="analysis">تحليل النتائج والمناقشة</option>
+                    <option value="full">أحتاج مساعدة كاملة</option>
+                </select>
+                <input type="text" name="subject" placeholder="عنوان البحث المقترح">
+                <input type="number" name="words" placeholder="عدد الكلمات المطلوب تقريباً">
+            `;
+            if(type === 'publication') return `
+                <label style="display:block; margin-bottom:8px; font-weight:600;">حالة البحث:</label>
+                <select name="status" required>
+                    <option value="idea">فكرة بحث فقط</option>
+                    <option value="draft">مسودة أولية</option>
+                    <option value="ready">بحث جاهز للنشر</option>
+                </select>
+                <label style="display:block; margin-bottom:8px; font-weight:600;">تصنيف المجلة المستهدف:</label>
+                <select name="journal_q" required>
+                    <option value="any">لا يهم / أي تصنيف</option>
+                    <option value="Q1">Q1 (أعلى 25%)</option>
+                    <option value="Q2">Q2 (25%-50%)</option>
+                </select>
+            `;
+            if(type === 'statistics') return `
+                <label style="display:block; margin-bottom:8px; font-weight:600;">نوع الدراسة:</label>
+                <select name="study_type" required>
+                    <option value="quantitative">كمية (Quantitative)</option>
+                    <option value="qualitative">نوعية (Qualitative)</option>
+                    <option value="mixed">مختلطة (Mixed)</option>
+                </select>
+                <input type="number" name="sample_size" placeholder="حجم العينة" required>
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom:5px;">التحليلات المطلوبة:</label>
+                    <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                        <label><input type="checkbox" name="an_desc" checked> الإحصاء الوصفي</label>
+                        <label><input type="checkbox" name="an_ttest"> T-Test</label>
+                        <label><input type="checkbox" name="an_anova"> ANOVA</label>
+                        <label><input type="checkbox" name="an_reg"> الانحدار</label>
+                    </div>
+                </div>
+            `;
+            // Default for others
+            return `<textarea name="details" rows="4" placeholder="تفاصيل إضافية حول الطلب..."></textarea>`;
+        }
+
+        function getUploadFields(type) {
+            return `
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <i class="fa-solid fa-cloud-arrow-up fa-3x" style="color: var(--g4); margin-bottom: 10px;"></i>
+                    <p>اضغط هنا لرفع الملفات أو اسحبها هنا</p>
+                    <p style="font-size: 0.8rem; margin-top: 5px;">(PDF, Word, Excel)</p>
+                    <input type="file" id="fileInput" multiple style="display: none;" onchange="alert('تم اختيار الملفات للتحميل')">
+                </div>
+                <textarea name="notes" rows="3" placeholder="ملاحظات نهائية للخبراء..." style="margin-top: 15px;"></textarea>
+                <label style="display:flex; gap:10px; align-items:center; margin-top:10px;">
+                    <input type="checkbox" style="width:auto; margin:0;" required>
+                    <span style="font-size:0.9rem;">أؤكد صحة البيانات وأوافق على سياسة الخصوصية</span>
+                </label>
+            `;
+        }
+
+        function nextStep(n) {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${n}`).classList.add('active');
+            
+            document.querySelectorAll('.wizard-steps .step').forEach(s => {
+                s.classList.remove('active');
+                if(s.id.includes(n)) s.classList.add('active');
+            });
+        }
+
+        function submitOrder(serviceName) {
+            const btn = getEl('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الإرسال...`;
+
+            const user = JSON.parse(localStorage.getItem(DB_CURR_USER));
+            const formData = new FormData(getEl('serviceForm'));
+            const data = Object.fromEntries(formData.entries());
+            
+            const orderId = 'AH-' + Math.floor(100000 + Math.random() * 900000);
+            const date = new Date().toLocaleDateString('ar-SA');
+            
+            const newOrder = {
+                id: orderId,
+                service: serviceName,
+                title: data.subject || data.details || 'طلب عام', // Fallback title
+                status: 'in-progress',
+                date: date,
+                userEmail: user.email,
+                data: data
+            };
+
+            // Save
+            const orders = JSON.parse(localStorage.getItem(DB_ORDERS) || '[]');
+            orders.push(newOrder);
+            localStorage.setItem(DB_ORDERS, JSON.stringify(orders));
+
+            // Notification
+            addNotif(`تم استلام طلبك رقم ${orderId} بنجاح!`);
+
+            // Mailto
+            const body = `طلب جديد: ${serviceName}\nرقم الطلب: ${orderId}\nالعميل: ${user.fname}\nالبريد: ${user.email}\nالتفاصيل: ${JSON.stringify(data)}`;
+            window.location.href = `mailto:scottmcnamara316@gmail.com?subject=طلب ${serviceName} | ${orderId} | ${user.fname}&body=${encodeURIComponent(body)}`;
+
+            setTimeout(() => {
+                alert(`✅ تم تقديم طلبك بنجاح!\nرقم الطلب: ${orderId}\nسيتم التواصل معك قريباً.`);
+                updateBadge();
+                navigate('orders');
+            }, 1500);
+        }
+
+        // --- NOTIFICATIONS ---
+        function addNotif(text) {
+            const notifs = JSON.parse(localStorage.getItem(DB_NOTIFS) || '[]');
+            notifs.unshift({ text, time: new Date().toLocaleTimeString('ar-SA'), read: false });
+            localStorage.setItem(DB_NOTIFS, JSON.stringify(notifs));
+            updateNotifs();
+        }
+
+        function updateNotifs() {
+            const notifs = JSON.parse(localStorage.getItem(DB_NOTIFS) || '[]');
+            const list = getEl('notifList');
+            const dot = getEl('notifDot');
+            
+            const unread = notifs.filter(n => !n.read).length;
+            dot.style.display = unread > 0 ? 'block' : 'none';
+
+            if(notifs.length === 0) {
+                list.innerHTML = '<div class="notif-item text-center">لا توجد إشعارات</div>';
+            } else {
+                list.innerHTML = notifs.slice(0, 5).map(n => `
+                    <div class="notif-item" style="${!n.read ? 'background:var(--g1); font-weight:700;' : ''}">
+                        ${n.text}
+                        <span class="time">${n.time}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleNotifs() {
+            getEl('notifDropdown').classList.toggle('show');
+            // Mark as read logic here
+            const notifs = JSON.parse(localStorage.getItem(DB_NOTIFS) || '[]');
+            notifs.forEach(n => n.read = true);
+            localStorage.setItem(DB_NOTIFS, JSON.stringify(notifs));
+            setTimeout(updateNotifs, 2000); // Update badge after close
+        }
+
+        // --- EXPERTS PAGE ---
+        function renderExperts(container) {
+            let html = `
+                <div class="page-header">
+                    <h1 class="page-title">خبراؤنا</h1>
+                    <p class="page-desc">فريق من الأكاديميين المحترفين جاهز لمساعدتك</p>
+                </div>
+                <div class="flex-between" style="margin-bottom: 20px; gap: 10px;">
+                    <input type="text" placeholder="بحث عن خبير بالاسم أو التخصص..." style="max-width: 300px; margin-bottom: 0;">
+                    <select style="max-width: 200px; margin-bottom: 0;">
+                        <option value="">كل التخصصات</option>
+                        <option value="الطب">الطب</option>
+                        <option value="الهندسة">الهندسة</option>
+                    </select>
+                </div>
+                <div class="grid grid-3">
+            `;
+            
+            experts.forEach(e => {
+                let rank = e.rating >= 4.8 ? '💎' : (e.rating >= 4.6 ? '🥇' : (e.rating >= 4.4 ? '🥈' : '🥉'));
+                html += `
+                    <div class="card expert-card">
+                        <div class="rank-badge">${rank}</div>
+                        <div class="expert-img"><i class="fa-solid fa-user"></i></div>
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;">${e.name}</h3>
+                        <p style="color: var(--p); font-weight: 600; font-size: 0.9rem;">${e.field}</p>
+                        <div class="expert-rating">${'★'.repeat(Math.floor(e.rating))} (${e.rating})</div>
+                        <div class="expert-stats">
+                            <span><i class="fa-solid fa-check"></i> ${e.projects} مشروع</span>
+                            <span><i class="fa-solid fa-clock"></i> ${e.exp} سنة</span>
+                        </div>
+                        <p class="expert-bio">${e.bio}</p>
+                        <button class="btn btn-outline" onclick="navigate('thesis')">طلب خدمة</button>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // --- LIBRARY PAGE ---
+        function renderLibrary(container) {
+            let html = `
+                <div class="page-header">
+                    <h1 class="page-title">مكتبة النماذج</h1>
+                    <p class="page-desc">قوالب جاهزة لتسريع عملك الأكاديمي</p>
+                </div>
+                <div class="grid grid-3">
+            `;
+            libraryTemplates.forEach(t => {
+                let icon = t.type === 'Word' ? 'fa-file-word' : (t.type === 'PPT' ? 'fa-file-powerpoint' : 'fa-file-code');
+                let color = t.type === 'Word' ? '#2b579a' : (t.type === 'PPT' ? '#d24726' : '#333');
+                html += `
+                    <div class="resource-item">
+                        <div class="file-icon" style="color: ${color};"><i class="fa-solid ${icon}"></i></div>
+                        <div style="flex: 1;">
+                            <h4 style="font-size: 0.95rem; margin-bottom: 2px;">${t.title}</h4>
+                            <span style="font-size: 0.8rem; color: var(--g5);">${t.type} • ${t.size}</span>
+                        </div>
+                        <button class="btn btn-outline" style="padding: 5px 15px; font-size: 0.8rem;"><i class="fa-solid fa-download"></i></button>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // --- FORUM PAGE ---
+        function renderForum(container) {
+            const cats = [
+                { name: 'نقاشات البحث العلمي', count: '245 موضوع', color: 'blue' },
+                { name: 'تجارب النشر Scopus', count: '178 موضوع', color: 'green' },
+                { name: 'استفسارات إحصائية', count: '156 موضوع', color: 'orange' },
+                { name: 'فرص ومؤتمرات', count: '89 موضوع', color: 'purple' },
+                { name: 'التخصصات الطبية', count: '67 موضوع', color: 'red' },
+                { name: 'الهندسة والتقنية', count: '92 موضوع', color: 'cyan' },
+                { name: 'قصص نجاح', count: '45 موضوع', color: 'pink' },
+            ];
+            let html = `
+                <div class="page-header flex-between">
+                    <div>
+                        <h1 class="page-title">المجتمع الأكاديمي</h1>
+                        <p class="page-desc">ناقش، تبادل الخبرات، وابحث عن إجابات</p>
+                    </div>
+                    <button class="btn"><i class="fa-solid fa-plus"></i> موضوع جديد</button>
+                </div>
+                <div class="grid" style="grid-template-columns: 1fr;">
+            `;
+            cats.forEach(c => {
+                html += `
+                    <div class="forum-cat">
+                        <div class="flex-center" style="gap: 15px;">
+                            <i class="fa-solid fa-comments fa-2x" style="color: var(--${c.color}); opacity: 0.5;"></i>
+                            <div>
+                                <h3 style="font-size: 1.1rem;">${c.name}</h3>
+                                <p style="font-size: 0.85rem; color: var(--g5);">${c.count}</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-left" style="color: var(--g3);"></i>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+    </script>
+</body>
+</html>
